@@ -1,6 +1,11 @@
 import * as React from "react";
 import { createRoot } from "react-dom/client";
-import { HashRouter as Router, Routes, Route, Link } from "react-router-dom";
+import { HashRouter, Routes, Route, Link } from "react-router-dom";
+import { Provider } from "react-redux";
+import { PersistGate } from "redux-persist/integration/react";
+import store, { persistor } from "./store/index";
+
+// 路由
 import Home from "./pages/Home";
 
 function About() {
@@ -9,17 +14,21 @@ function About() {
 
 const App = () => {
   return (
-    <Router>
-      <nav>
-        <Link to="/">Home</Link> | <Link to="/about">About</Link>
-      </nav>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/about" element={<About />} />
-      </Routes>
-    </Router>
+    <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
+        <React.StrictMode>
+          <HashRouter>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/about" element={<About />} />
+            </Routes>
+          </HashRouter>
+        </React.StrictMode>
+      </PersistGate>
+    </Provider>
   );
 };
-
-const root = createRoot(document.body);
+// 获取专门的容器元素
+const container = document.getElementById("root");
+const root = createRoot(container);
 root.render(<App />);
