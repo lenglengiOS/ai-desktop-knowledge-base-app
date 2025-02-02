@@ -12,9 +12,10 @@
     "outDir": "dist",
     "moduleResolution": "node",
     "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true, // 对于 CSS 模块，通常需要这个选项来允许默认导入
     "paths": {
       "*": ["node_modules/*"]
     }
   },
-  "include": ["src/**/*"]
+  "include": ["src/**/*", "./declarations.d.ts"]
 }

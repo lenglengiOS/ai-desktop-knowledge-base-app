@@ -6,7 +6,7 @@ import { PersistGate } from "redux-persist/integration/react";
 import store, { persistor } from "./store/index";
 
 // 路由
-import Home from "./pages/Home";
+import Home from "./pages/home";
 
 function About() {
   return <h2>About Page111222</h2>;
