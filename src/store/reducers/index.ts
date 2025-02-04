@@ -1,4 +1,11 @@
 import { combineReducers } from "redux";
 import appReducer from "./appReducer";
+import panelReducer, { PanelStateType } from "./panelReducer";
 
-export default combineReducers({ app: appReducer });
+export type ReducersType = {
+  panel: PanelStateType;
+};
+
+export default combineReducers<ReducersType>({
+  panel: panelReducer,
+});

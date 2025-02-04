@@ -7,12 +7,7 @@ import {
 import type { MenuProps } from "antd";
 import { Layout, Menu, theme } from "antd";
 const { Content, Footer, Sider } = Layout;
-import {
-  LHLSender,
-  LHLPanel,
-  LHLDraft,
-  LHLKnowledge,
-} from "./components/index";
+import { LHLPanel, LHLDraft, LHLKnowledge } from "../../components/index";
 
 type MenuItem = Required<MenuProps>["items"][number];
 
@@ -48,7 +43,7 @@ const App: React.FC = () => {
   };
 
   return (
-    <Layout style={{ minHeight: "100vh" }}>
+    <Layout style={{ height: "100vh" }}>
       <Sider
         theme="light"
         collapsible
@@ -56,14 +51,15 @@ const App: React.FC = () => {
         onCollapse={(value) => setCollapsed(value)}
       >
         <Menu
+          style={{ height: "100vh" }}
           defaultSelectedKeys={["1"]}
-          mode="inline"
+          mode="vertical"
           items={items}
           onSelect={onSelect}
         />
       </Sider>
-      <Layout style={{ backgroundColor: "#FFF" }}>
-        <Content style={{ display: "flex" }}>
+      <Layout style={{ backgroundColor: "#FFF", height: "100vh" }}>
+        <Content>
           {key === "1" && <LHLPanel />}
           {key === "2" && <LHLDraft />}
           {key === "3" && <LHLKnowledge />}

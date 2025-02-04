@@ -1,0 +1,22 @@
+/* 针对webkit浏览器（如Chrome, Safari） */
+::-webkit-scrollbar {
+  width: 8px; /* 滚动条宽度 */
+}
+
+::-webkit-scrollbar-track {
+  background: transparent; /* 滚动条轨道背景颜色 */
+}
+
+::-webkit-scrollbar-thumb {
+  background: #a2a2a2; /* 滚动条滑块颜色 */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a2a2a2; /* 鼠标悬停在滚动条滑块上的颜色 */
+}
+
+/* 针对Firefox */
+html {
+  scrollbar-width: thin; /* 滚动条宽度 */
+  scrollbar-color: #a2a2a2 transparent; /* 滚动条滑块颜色和轨道颜色 */
+}

@@ -1,4 +1,4 @@
-import * as Types from "../constant/aTypes";
+import * as Types from "../constant/actionTypes";
 
 const initState = {
   loading: false,
