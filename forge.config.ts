@@ -15,7 +15,7 @@ const ICON_URL = "./src/assets/images/icon";
 const config: ForgeConfig = {
   packagerConfig: {
     asar: true,
-    name: "海豚创作助手",
+    name: "海豚AI助手",
     icon: ICON_URL,
   },
   rebuildConfig: {},

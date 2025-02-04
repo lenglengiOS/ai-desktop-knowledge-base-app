@@ -7,7 +7,10 @@ import * as Request from "../../api/request";
 import * as PanelActions from "../../store/actions/panelAction";
 import { useDispatch, useSelector } from "react-redux";
 import { ReducersType } from "../../store/reducers";
-import { MessageItemType } from "../../store/reducers/panelReducer";
+import {
+  MessageItemType,
+  PanelStateType,
+} from "../../store/reducers/panelReducer";
 import { GetProp, Typography } from "antd/es";
 import MarkdownContent from "../markdownContent";
 import { ChatCompletionChunk } from "openai/resources";
@@ -36,7 +39,9 @@ const roles: GetProp<typeof Bubble.List, "roles"> = {
 const LHLPanel: FC<Iprops> = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const dispatch = useDispatch();
-  const { messages } = useSelector<ReducersType>((state) => state.panel);
+  const { messages }: PanelStateType = useSelector<ReducersType>(
+    (state) => state.panel
+  );
 
   const onSubmit = (content: string) => {
     // 第一步，把用户输入的消息存入Store
@@ -69,14 +74,13 @@ const LHLPanel: FC<Iprops> = () => {
         );
       },
 
-      onFinish: (message: string) => {
+      onFinish: () => {
         console.log("结束： ");
         setLoading(false);
       },
 
       getStream: (st: any) => {
         stream = st;
-        console.log("======stream=====", stream);
       },
     });
   };

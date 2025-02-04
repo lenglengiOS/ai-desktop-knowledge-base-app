@@ -8,7 +8,7 @@ export type MessageItemType = {
 };
 
 export type PanelStateType = {
-  messages: MessageItemType[];
+  messages?: MessageItemType[];
 };
 
 const initState: PanelStateType = {
