@@ -68,9 +68,6 @@ const App: React.FC = () => {
           {key === "2" && <LHLDraft />}
           {key === "3" && <LHLKnowledge />}
         </Content>
-        <Footer style={{ textAlign: "center", backgroundColor: "#FFF" }}>
-          <LHLSender />
-        </Footer>
       </Layout>
     </Layout>
   );

@@ -1,5 +1,5 @@
 import LHLSender from "./sender";
-import LHLPanel from "./panel";
+import LHLPanel from "../../../components/panel/panel";
 import LHLDraft from "./draft";
 import LHLKnowledge from "./knowledge";
 

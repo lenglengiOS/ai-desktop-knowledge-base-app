@@ -23,20 +23,29 @@ const createWindow = (): void => {
     minHeight: 900,
     webPreferences: {
       preload: MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY,
+      webSecurity: false,
     },
-    icon: join(__dirname, "../../src/assets/images/logo.png"),
   });
-
-  console.log(
-    "==========join(__dirname)========: ",
-    join(__dirname, "../../src/assets/images/logo.png")
-  );
 
   // and load the index.html of the app.
   mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
 
   // Open the DevTools.
   isDev && mainWindow.webContents.openDevTools();
+
+  // 修改 CSP 以允许从特定源加载资源
+  mainWindow.webContents.session.webRequest.onHeadersReceived(
+    (details, callback) => {
+      callback({
+        responseHeaders: {
+          ...details.responseHeaders,
+          "Content-Security-Policy": [
+            "connect-src 'self' https://api.moonshot.cn/v1/chat/completions",
+          ],
+        },
+      });
+    }
+  );
 };
 
 // This method will be called when Electron has finished
