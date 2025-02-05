@@ -15,7 +15,9 @@ const persistConfig = getPersistConfig({
   // @ts-ignore
   stateReconciler: autoMergeLevel2, // 查看 'Merge Process' 部分的具体情况
   whitelist:
-    process.env.NODE_ENV === "development" ? [] : ["app.isNfsAvaliable"],
+    process.env.NODE_ENV === "development"
+      ? ["panel.messages", "knowledge"]
+      : ["panel.messages", "knowledge"],
   rootReducer,
 });
 

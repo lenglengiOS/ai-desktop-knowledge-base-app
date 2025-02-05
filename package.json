@@ -1,7 +1,7 @@
 {
   "name": "ai-desktop-knowledge-base-app",
   "productName": "ai-desktop-knowledge-base-app",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "My Electron application description",
   "main": ".webpack/main",
   "scripts": {
@@ -52,6 +52,7 @@
     "@types/markdown-it": "^14.1.2",
     "@types/node": "^22.13.0",
     "antd": "^5.23.3",
+    "copy-to-clipboard": "^3.3.3",
     "dayjs": "^1.11.13",
     "electron-is-dev": "^2.0.0",
     "electron-squirrel-startup": "^1.0.1",
@@ -62,6 +63,7 @@
     "openai": "^4.82.0",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
+    "react-draggable": "^4.4.6",
     "react-redux": "^8.0.2",
     "react-router-dom": "^6.3.0",
     "redux": "^4.2.0",

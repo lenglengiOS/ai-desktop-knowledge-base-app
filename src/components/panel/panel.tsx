@@ -1,26 +1,44 @@
-import React, { useState, FC, useRef, useEffect } from "react";
+import React, {
+  useState,
+  FC,
+  useRef,
+  useEffect,
+  useImperativeHandle,
+  forwardRef,
+} from "react";
 import { Bubble, BubbleProps } from "@ant-design/x";
 import { Footer } from "antd/es/layout/layout";
 import LHLSender from "../sender/sender";
 import styles from "./panel.module.css";
 import * as Request from "../../api/request";
 import * as PanelActions from "../../store/actions/panelAction";
+import * as KnowledgeActions from "../../store/actions/knowledgeAction";
 import { useDispatch, useSelector } from "react-redux";
 import { ReducersType } from "../../store/reducers";
 import {
   MessageItemType,
   PanelStateType,
 } from "../../store/reducers/panelReducer";
-import { GetProp, Typography } from "antd/es";
-import MarkdownContent from "../markdownContent";
+import { Button, Flex, GetProp, Tooltip, Typography, message } from "antd/es";
+import { LHLMarkdownContent } from "../../components/index";
 import { ChatCompletionChunk } from "openai/resources";
 import { Stream } from "openai/streaming";
+import {
+  CopyOutlined,
+  FolderAddOutlined,
+  FrownOutlined,
+  SmileOutlined,
+  SyncOutlined,
+  UserOutlined,
+} from "@ant-design/icons";
+import copy from "copy-to-clipboard";
+import AddKnowledgeModal from "../knowledge/addKnowledgeModal";
 
 interface Iprops {}
 
 const renderMarkdown: BubbleProps["messageRender"] = (content) => (
   <Typography style={{ textAlign: "left" }}>
-    <MarkdownContent content={content} />
+    <LHLMarkdownContent content={content} />
   </Typography>
 );
 
@@ -117,11 +135,16 @@ const LHLPanel: FC<Iprops> = () => {
           items={messages.map((item: any, i: number) => {
             const { content, placement } = item;
             return {
-              key: i,
+              key: i.toString(),
               role: placement === "start" ? "ai" : "user",
               content,
               loading: placement === "start" && content === "",
-              messageRender: item.placement === "end" ? null : renderMarkdown,
+              messageRender: placement === "end" ? null : renderMarkdown,
+              footer:
+                placement === "start" && !loading ? (
+                  <BubbleFotter content={content} />
+                ) : null,
+              variant: placement === "start" ? "filled" : "shadow",
             };
           })}
         />
@@ -135,6 +158,50 @@ const LHLPanel: FC<Iprops> = () => {
         <LHLSender onSubmit={onSubmit} loading={loading} onCancel={onCancel} />
       </Footer>
     </div>
+  );
+};
+
+const BubbleFotter = ({ content }: any) => {
+  const [messageApi, contextHolder] = message.useMessage();
+  const childRef = useRef(null);
+
+  const copyContent = () => {
+    copy(content);
+    messageApi.open({
+      type: "success",
+      content: "已复制到粘贴板",
+    });
+  };
+
+  const add = () => {
+    if (childRef.current) {
+      childRef.current.showModal();
+    }
+  };
+
+  return (
+    <>
+      <Flex>
+        {contextHolder}
+        <Tooltip title="复制到粘贴板">
+          <Button
+            onClick={copyContent}
+            size="middle"
+            type="text"
+            icon={<CopyOutlined />}
+          />
+        </Tooltip>
+        <Tooltip title="添加到知识库">
+          <Button
+            onClick={add}
+            size="middle"
+            type="text"
+            icon={<FolderAddOutlined />}
+          />
+        </Tooltip>
+      </Flex>
+      <AddKnowledgeModal ref={childRef} content={content} />
+    </>
   );
 };
 

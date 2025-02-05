@@ -17,6 +17,7 @@ const config: ForgeConfig = {
     asar: true,
     name: "海豚AI助手",
     icon: ICON_URL,
+    appVersion: "2.0.0",
   },
   rebuildConfig: {},
   makers: [

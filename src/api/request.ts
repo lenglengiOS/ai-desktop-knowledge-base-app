@@ -12,6 +12,7 @@ type ChatType = {
   getStream: (stream: any) => void;
 };
 
+// AI聊天
 export async function chat({
   content,
   onUpdate,
@@ -21,7 +22,7 @@ export async function chat({
   let stream;
   try {
     stream = await client.chat.completions.create({
-      model: "moonshot-v1-8k",
+      model: "moonshot-v1-auto",
       // if chat context is needed, modify the array
       messages: [{ role: "user", content }],
       // stream mode

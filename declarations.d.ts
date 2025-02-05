@@ -7,3 +7,9 @@ declare module "*.png";
 declare module "*.jpg";
 declare module "*.jpeg";
 declare module "*.gif";
+
+declare module "markdown-it-highlight" {
+  import MarkdownIt from "markdown-it";
+  const highlight: (md: MarkdownIt) => void;
+  export default highlight;
+}

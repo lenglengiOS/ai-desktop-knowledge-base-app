@@ -28,6 +28,7 @@ export const rules: Required<ModuleOptions>["rules"] = [
       },
     },
   },
+
   {
     test: /\.jsx?$/,
     use: {
