@@ -20,17 +20,15 @@ const initState: KnowledgeStateType = {
 };
 
 const knowledgeReducer = (state = initState, action: ActionType) => {
-  console.log("知识库reducer88");
   const payload = action.payload;
   switch (action.type) {
     // 添加知识库
     case Types.ADD_KNOWLEDGE:
-      console.log("知识库reducer");
       let knowledgeList = state.knowledgeList;
       // 以当前时间戳作为id
       let timestamp = new Date().getTime();
       // 获取当前时间
-      const formattedTime = dayjs().format("YYYYMMDDHHmmss");
+      const formattedTime = dayjs().format("YYYY-MM-DD HH:mm:ss");
       const item: knowledgeItemType = {
         id: timestamp,
         name: payload.name,
@@ -38,7 +36,7 @@ const knowledgeReducer = (state = initState, action: ActionType) => {
         createTime: formattedTime,
       };
 
-      knowledgeList.push(item);
+      knowledgeList.unshift(item);
       return { ...state, knowledgeList };
 
     // 修改知识库

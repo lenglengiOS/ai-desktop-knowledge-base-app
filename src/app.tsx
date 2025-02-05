@@ -5,13 +5,11 @@ import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import store, { persistor } from "./store/index";
 import "./app.css";
+import { Provider as KProvider, KeepAlive } from "react-keep-alive";
 
 // 路由
 import Home from "./pages/home/home";
-
-function About() {
-  return <h2>About Page111222</h2>;
-}
+import KnowledgeDetail from "./pages/knowledgeDetail/knowledgeDetail";
 
 const App = () => {
   return (
@@ -21,7 +19,7 @@ const App = () => {
           <HashRouter>
             <Routes>
               <Route path="/" element={<Home />} />
-              <Route path="/about" element={<About />} />
+              <Route path="/knowledgeDetail" element={<KnowledgeDetail />} />
             </Routes>
           </HashRouter>
         </React.StrictMode>
