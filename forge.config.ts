@@ -25,21 +25,15 @@ const config: ForgeConfig = {
   rebuildConfig: {},
   makers: [
     // Windows 的 Squirrel 安装包
-    new MakerSquirrel({
-      setupIcon: ICON_URL,
-    }),
+    new MakerSquirrel(),
     // 为各平台创建 ZIP 压缩包
-    new MakerZIP({}, ["darwin"]),
+    new MakerZIP(),
     // RPM-based Linux 系统的 RPM 包
-    new MakerRpm({}),
+    new MakerRpm(),
     // macOS 的 DMG 镜像文件
-    new MakerDMG({}),
+    new MakerDMG(),
     // Debian-based Linux 系统的 DEB 包
-    new MakerDeb({
-      options: {
-        icon: ICON_URL,
-      },
-    }),
+    new MakerDeb(),
   ],
   plugins: [
     new AutoUnpackNativesPlugin({}),
