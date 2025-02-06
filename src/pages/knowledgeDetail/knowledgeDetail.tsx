@@ -12,11 +12,13 @@ import Meta from "antd/es/card/Meta";
 import { useLocation, useNavigate } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
 import hljs from "highlight.js";
+// @ts-ignore
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+// @ts-ignore
 import { coldarkCold } from "react-syntax-highlighter/dist/cjs/styles/prism";
 
 interface Iprops {
-  item: knowledgeItemType;
+  item?: knowledgeItemType;
 }
 
 const LHLKnowledgeDetail: FC<Iprops> = ({ item }) => {
@@ -24,9 +26,9 @@ const LHLKnowledgeDetail: FC<Iprops> = ({ item }) => {
     <ReactMarkdown
       children={item.content}
       components={{
-        code({ node, inline, className, children, ...props }) {
+        code({ node, className, children, ...props }) {
           const match = /language-(\w+)/.exec(className || "");
-          return !inline && match ? (
+          return match ? (
             <CodeBlock
               language={match[1]}
               value={String(children).replace(/\n$/, "")}

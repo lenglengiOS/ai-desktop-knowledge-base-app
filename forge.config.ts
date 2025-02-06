@@ -3,6 +3,7 @@ import { MakerSquirrel } from "@electron-forge/maker-squirrel";
 import { MakerZIP } from "@electron-forge/maker-zip";
 import { MakerDeb } from "@electron-forge/maker-deb";
 import { MakerRpm } from "@electron-forge/maker-rpm";
+import { MakerDMG } from "@electron-forge/maker-dmg";
 import { AutoUnpackNativesPlugin } from "@electron-forge/plugin-auto-unpack-natives";
 import { WebpackPlugin } from "@electron-forge/plugin-webpack";
 import { FusesPlugin } from "@electron-forge/plugin-fuses";
@@ -18,14 +19,21 @@ const config: ForgeConfig = {
     name: "海豚AI助手",
     icon: ICON_URL,
     appVersion: "2.0.0",
+    appCopyright: "Copyright © 2025 lengleng",
   },
   rebuildConfig: {},
   makers: [
+    // Windows 的 Squirrel 安装包
     new MakerSquirrel({
       setupIcon: ICON_URL,
     }),
+    // 为各平台创建 ZIP 压缩包
     new MakerZIP({}, ["darwin"]),
+    // RPM-based Linux 系统的 RPM 包
     new MakerRpm({}),
+    // macOS 的 DMG 镜像文件
+    new MakerDMG({}),
+    // Debian-based Linux 系统的 DEB 包
     new MakerDeb({
       options: {
         icon: ICON_URL,
