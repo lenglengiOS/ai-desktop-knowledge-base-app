@@ -19,6 +19,7 @@ const LHLSender: FC<Iprops> = ({ onSubmit, onCancel, loading }) => {
         onChange={(v) => {
           setValue(v);
         }}
+        onKeyPress={() => {}}
         onSubmit={async (content: string) => {
           setValue("");
           onSubmit && onSubmit(content.trim());

@@ -124,7 +124,7 @@ const AddKnowledgeModal: React.FC<IProps> = forwardRef((props, ref) => {
           placeholder="请输入保存的名称"
           value={name}
           ref={inputRef}
-          onChange={(e) => setName(e.target.value)}
+          onChange={(e: any) => setName(e.target.value)}
         />
       </Modal>
     </>
