@@ -27,6 +27,7 @@ const config: ForgeConfig = {
     // Windows 的 Squirrel 安装包
     {
       name: "@electron-forge/maker-squirrel",
+      platforms: ["win32"],
       config: {
         // Squirrel.Windows specific configuration (if needed)
       },
@@ -34,9 +35,8 @@ const config: ForgeConfig = {
     // 为各平台创建 ZIP 压缩包
     {
       name: "@electron-forge/maker-zip",
-      config: {
-        platforms: ["darwin", "linux", "win32"], // Specify platforms if needed
-      },
+      platforms: ["darwin", "linux", "win32"], // Specify platforms if needed
+      config: {},
     },
     // RPM-based Linux 系统的 RPM 包
     {
