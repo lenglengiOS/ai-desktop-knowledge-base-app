@@ -25,15 +25,40 @@ const config: ForgeConfig = {
   rebuildConfig: {},
   makers: [
     // Windows 的 Squirrel 安装包
-    new MakerSquirrel(),
+    {
+      name: "@electron-forge/maker-squirrel",
+      config: {
+        // Squirrel.Windows specific configuration (if needed)
+      },
+    },
     // 为各平台创建 ZIP 压缩包
-    new MakerZIP(),
+    {
+      name: "@electron-forge/maker-zip",
+      config: {
+        platforms: ["darwin", "linux", "win32"], // Specify platforms if needed
+      },
+    },
     // RPM-based Linux 系统的 RPM 包
-    new MakerRpm(),
+    {
+      name: "@electron-forge/maker-rpm",
+      config: {
+        // RPM specific configuration (if needed)
+      },
+    },
     // macOS 的 DMG 镜像文件
-    new MakerDMG(),
+    {
+      name: "@electron-forge/maker-dmg",
+      config: {
+        // DMG specific configuration (if needed)
+      },
+    },
     // Debian-based Linux 系统的 DEB 包
-    new MakerDeb(),
+    {
+      name: "@electron-forge/maker-deb",
+      config: {
+        // DEB specific configuration (if needed)
+      },
+    },
   ],
   plugins: [
     new AutoUnpackNativesPlugin({}),
