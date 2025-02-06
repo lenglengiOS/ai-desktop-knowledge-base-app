@@ -17,8 +17,5 @@
       "*": ["node_modules/*"]
     }
   },
-  "include": ["src/**/*", "./declarations.d.ts"],
-  "ts-node": {
-    "esm": true
-  }
+  "include": ["src/**/*", "./declarations.d.ts"]
 }
