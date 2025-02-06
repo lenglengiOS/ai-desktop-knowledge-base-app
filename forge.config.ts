@@ -12,13 +12,14 @@ import { FuseV1Options, FuseVersion } from "@electron/fuses";
 import { mainConfig } from "./webpack.main.config";
 import { rendererConfig } from "./webpack.renderer.config";
 const ICON_URL = "./src/assets/images/icon";
+import PackageJson from "./package.json";
 
 const config: ForgeConfig = {
   packagerConfig: {
     asar: true,
     name: "海豚AI助手",
     icon: ICON_URL,
-    appVersion: "2.0.0",
+    appVersion: PackageJson.version,
     appCopyright: "Copyright © 2025 lengleng",
   },
   rebuildConfig: {},
