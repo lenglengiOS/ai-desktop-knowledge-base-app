@@ -22,6 +22,11 @@ jobs:
       - name: Check out git repository
         uses: actions/checkout@v4  # 检出代码仓库
 
+      - name: Reconfigure git to use HTTP authentication
+        run: >
+          git config --global url."https://github.com/".insteadOf
+          ssh://git@github.com/
+
       - name: Install Node.js
         uses: actions/setup-node@v4
         with:
