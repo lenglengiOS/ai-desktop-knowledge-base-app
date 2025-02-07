@@ -75,6 +75,7 @@
   },
   "license": "MIT",
   "dependencies": {
+    "@ant-design/colors": "^7.2.0",
     "@ant-design/icons": "^5.6.0",
     "@ant-design/x": "^1.0.5",
     "@electron-forge/maker-dmg": "^7.6.1",
