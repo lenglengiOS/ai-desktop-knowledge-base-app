@@ -6,8 +6,8 @@
   "main": ".webpack/main",
   "scripts": {
     "start": "electron-forge start",
-    "package": "electron-forge package",
-    "make": "electron-forge make ",
+    "package": "electron-forge package --ignore=node_modules",
+    "make": "electron-forge make --ignore=node_modules",
     "publish": "electron-forge publish",
     "lint": "eslint --ext .ts,.tsx ."
   },
