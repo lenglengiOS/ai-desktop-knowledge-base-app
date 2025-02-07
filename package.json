@@ -7,7 +7,7 @@
   "scripts": {
     "start": "electron-forge start",
     "package": "electron-forge package",
-    "make": "electron-forge make --no-prune",
+    "make": "electron-forge make --no-prune --ignore=/node_modules --ignore=/e2e --ignore=/src",
     "publish": "electron-forge publish",
     "lint": "eslint --ext .ts,.tsx ."
   },
