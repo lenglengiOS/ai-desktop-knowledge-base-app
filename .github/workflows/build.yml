@@ -1,68 +1,63 @@
-name: Build/release Electron app
+name: AutoBuild  # 工作流的名称
+
+permissions:
+  contents: write  # 给予写入仓库内容的权限
 
 on:
   push
-  
+   
+
 jobs:
   release:
-    runs-on: ${{ matrix.os }}
+    name: build and release electron app  # 任务名称
+    runs-on: ${{ matrix.os }}  # 在matrix.os定义的操作系统上运行
 
     strategy:
+      fail-fast: false  # 如果一个任务失败,其他任务继续运行
       matrix:
-        os: [macos-latest, windows-latest]
-        node-version: [20.x]
+        os: [windows-latest, macos-latest]  # 在Windows和macOS上运行任务
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-          lfs: true
+      - name: Check out git repository
+        uses: actions/checkout@v4  # 检出代码仓库
 
-      - name: Checkout LFS objects
-        run: git lfs checkout
-
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4.0.0
-
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: Install Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node-version }}
-          cache: 'pnpm'
+          node-version: 18.19.0  # 安装Node.js 18.19.0 （这里node环境是能够运行代码的环境）
 
       - name: Install Dependencies
-        run: pnpm install
+        run: |
+          npm i -g pnpm
+          pnpm install  # 安装项目依赖
 
-      - name: Install snapcraft
-        if: matrix.os == 'ubuntu-latest'
-        run: sudo snap install snapcraft --classic
+      - name: Build Electron App for windows
+        if: matrix.os == 'windows-latest'  # 只在Windows上运行
+        run: pnpm run make  # 构建Windows版应用
 
-   
-      - name: Build for macOS
-        if: matrix.os == 'macos-latest'
-        run: pnpm run make
-        env:
-          GH_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+      - name: Build Electron App for macos
+        if: matrix.os == 'macos-latest'  # 只在macOS上运行
+        run: |
+          pnpm run make
+          # pnpm run build:mac-arm  # 构建macOS版应用(包括ARM架构)
 
-      - name: Build for Windows
+      - name: Cleanup Artifacts for Windows
         if: matrix.os == 'windows-latest'
-        run: pnpm run make
+        run: |
+          npx del-cli "dist/*" "!dist/*.exe" "!dist/*.zip" "!dist/*.yml"  # 清理Windows构建产物,只保留特定文件
 
-      - name: Create Release
-        uses: softprops/action-gh-release@v2
+      - name: Cleanup Artifacts for MacOS
+        if: matrix.os == 'macos-latest'
+        run: |
+          npx del-cli "dist/*" "!dist/(*.dmg|*.zip|latest*.yml)"  # 清理macOS构建产物,只保留特定文件
+
+      - name: upload artifacts
+        uses: actions/upload-artifact@v4
         with:
-          draft: false
-          prerelease: true
-          files: |
-            dist/*.exe
-            dist/*.zip
-            dist/*.dmg
-            dist/*.AppImage
-            dist/*.snap
-            dist/*.deb
-            dist/*.rpm
-            dist/*.tar.gz
-            dist/latest*.yml
-        env:
-          GH_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+          name: ${{ matrix.os }}
+          path: dist  # 上传构建产物作为工作流artifact
+
+      - name: release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: 'dist/**'  # 将dist目录下所有文件添加到release
