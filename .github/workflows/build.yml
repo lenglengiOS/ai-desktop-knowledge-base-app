@@ -1,77 +1,52 @@
-name: AutoBuild # 工作流的名称
-
-permissions:
-  contents: write # 给予写入仓库内容的权限
-
+# 此工作流的名字
+name: Build 
+# 工作流的执行时机，可以设定为定时执行，每次push后执行，手动执行等
 on:
-  push:
-    tags:
-      - v* # 当推送以v开头的标签时触发此工作流
-
+  # workflow_dispatch为在Github仓库的Actions面板中手动执行
+  workflow_dispatch:
+# 工作/任务，这里的工作是可以并行的。
 jobs:
-  release:
-    name: build and release electron app # 任务名称
-    runs-on: ${{ matrix.os }} # 在matrix.os定义的操作系统上运行
-
-    if: startsWith(github.ref, 'refs/tags/') # 只在推送标签时运行
-    strategy:
-      fail-fast: false # 如果一个任务失败,其他任务继续运行
-      matrix:
-        os: [windows-latest, macos-latest] # 在Windows和macOS上运行任务
-
+  # 工作的名称“编译windows版”
+  buildwin:
+    # 运行的操作系统 windows server 2022
+    runs-on: windows-2022
+    # 步骤
     steps:
-      - name: Check out git repository
-        uses: actions/checkout@v4 # 检出代码仓库
-
-      - name: Install Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 18.19.0 # 安装Node.js 18 （这里node环境是能够运行代码的环境）
-
-      - name: Install Dependencies
-        run: |
-          npm i -g ts-node
-          npm install -g appdmg --python=python2.7
-          npm i -g pnpm
-          pnpm install  # 安装项目依赖
-
-      - name: Build Electron App for windows
-        if: matrix.os == 'windows-latest' # 只在Windows上运行
-        run: pnpm run make # 构建Windows版应用
-
-      - name: Build Electron App for macos
-        if: matrix.os == 'macos-latest' # 只在macOS上运行
-        run: |
-          pnpm run make  # 构建macOS版应用(包括ARM架构)
-
-       # step5: cleanup artifacts in dist_electron
-      - name: cleanup artifacts for windows
-        if: matrix.os == 'windows-2019'
-        run: |
-          mkdir artifacts
-          mv release/*.exe artifacts || true
-      - name: cleanup artifacts for macosZ
-        if: matrix.os == 'macos-10.15'
-        run: |
-          mkdir artifacts
-          mv release/*.dmg artifacts || true
-      - name: cleanup artifacts for Ubuntu
-        if: matrix.os == 'ubuntu-18.04'
-        run: |
-          mkdir artifacts
-          mv release/*.dmg artifacts || true
-      # step6: upload artifacts
-      - name: upload artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: ${{ matrix.os }}
-          path: artifacts
-
-      # step7: create release
-      - name: release
-        uses: softprops/action-gh-release@v1
-        if: startsWith(github.ref, 'refs/tags/')
-        with:
-          files: 'artifacts/**'
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    # 使用预制action：拉取最新的代码
+    - uses: actions/checkout@v2
+    # 步骤一的名称：
+    - name: Install and Build
+      # 该步骤运行的终端命令，进入仓库的src目录，安装依赖，运行编译命令
+      run:
+        cd src && npm install && npm run buildwin
+    # 步骤二的名称：将编译后的结果上传
+    - name: Upload File
+      # 使用预制action：上传文件，可以将执行路径打包成zip上传
+      uses: actions/upload-artifact@v2
+      with:
+        # 上传后文件的名称
+        name: windows
+        # 打包的路径以及文件过滤，此为仅打包dist目录下的exe文件
+        path: dist/*exe
+  # 工作的名称“编译macOS版”
+  buildmac:
+    # 运行的操作系统 macOS BigSur
+    runs-on: macos-11
+    # 步骤
+    steps:
+    # 使用预制action：拉取最新的代码
+    - uses: actions/checkout@v2
+    # 步骤一的名称：
+    - name: Install and Build
+      # 该步骤运行的终端命令，进入仓库的src目录，安装依赖，运行编译命令
+      run:
+        cd src && npm install && npm run buildmac
+    # 步骤二的名称：将编译后的结果上传
+    - name: Upload File
+      # 使用预制action：上传文件，可以将执行路径打包成zip上传
+      uses: actions/upload-artifact@v2
+      with:
+        # 上传后文件的名称
+        name: mac
+        # 打包的路径以及文件过滤，此为仅打包dist目录下的dmg文件
+        path: dist/*dmg
