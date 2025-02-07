@@ -21,6 +21,7 @@ const config: ForgeConfig = {
     icon: ICON_URL,
     appVersion: PackageJson.version,
     appCopyright: "Copyright © 2025 lengleng",
+    ignore: ["/node_modules", "/.git"],
   },
   rebuildConfig: {},
   makers: [
