@@ -20,6 +20,10 @@ jobs:
     steps:
       - name: Check out git repository
         uses: actions/checkout@v4  # 检出代码仓库
+      - name: Setup tmate session
+        uses: mxschmitt/action-tmate@v3
+        with:
+          limit-access-to-actor: true
 
       - name: Install Node.js
         uses: actions/setup-node@v4
