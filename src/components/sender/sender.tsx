@@ -15,7 +15,7 @@ const LHLSender: FC<Iprops> = ({ onSubmit, onCancel, loading }) => {
       <Sender
         loading={loading}
         value={value}
-        placeholder="发消息"
+        placeholder="发消息..."
         onChange={(v) => {
           setValue(v);
         }}
