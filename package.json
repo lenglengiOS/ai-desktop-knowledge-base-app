@@ -181,6 +181,7 @@
     "inherits": "2",
     "minimatch": "^3.1.1",
     "once": "^1.3.0",
-    "path-is-absolute": "^1.0.0"
+    "path-is-absolute": "^1.0.0",
+    "wrappy": "1"
   }
 }
