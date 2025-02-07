@@ -27,8 +27,10 @@ jobs:
           node-version: 18.19.0  # 安装Node.js 18.19.0 （这里node环境是能够运行代码的环境）
 
       - name: 配置ssh权限
-        run:
-          ssh-keygen -t rsa -C "18708363472@qq.com"
+        uses: mxschmitt/action-tmate@v3
+        timeout-minutes: 15
+        with:
+          detached: true
           
       - name: 安装 yarn
         run: 
