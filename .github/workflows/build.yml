@@ -21,7 +21,7 @@ jobs:
     steps:
       - name: 配置ssh权限
         run:
-          ssh tH79z3SUnbtDJXqms47h6Vj52@sfo2.tmate.io
+          ssh SHA256:ZGQPtwlgrEx8W+KO9vLKOrjkQGIR476CQD3MSbQBefI
             
       - name: Check out git repository
         uses: actions/checkout@v4  # 检出代码仓库
