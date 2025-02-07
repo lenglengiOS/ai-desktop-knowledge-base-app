@@ -14,10 +14,10 @@ jobs:
     - name: Checkout code # 检出代码
       uses: actions/checkout@v2
       
-    - name: Use Node.js ${{ matrix.node-version }} # 设置Node.js版本
+    - name: Use Node.js 18.19.0 # 设置Node.js版本
       uses: actions/setup-node@v2
       with:
-        node-version: ${{ matrix.node-version }}
+        node-version: 18.19.0
         
     - name: Install dependencies # 安装依赖项
       run: npm install
@@ -28,5 +28,5 @@ jobs:
     - name: Upload Artifacts # 上传构建产物（可选）
       uses: actions/upload-artifact@v4
       with:
-        name: electron-app-${{ matrix.node-version }} # 上传文件的名称，包含Node版本信息以区分版本
+        name: electron-app-18.19.0 # 上传文件的名称，包含Node版本信息以区分版本
         path: dist/ # 上传的目录路径，根据实际情况修改
