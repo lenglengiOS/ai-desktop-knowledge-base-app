@@ -1,31 +1,32 @@
-name: Build/release
-
+name: Electron Build
+ 
 on: push
-
+ 
 jobs:
-  release:
-    runs-on: ${{ matrix.os }}
-
+  build:
+    runs-on: ubuntu-latest # 使用Ubuntu作为运行环境
+ 
     strategy:
       matrix:
-        os: [macos-latest, ubuntu-latest, windows-latest]
-
+        node-version: [14.x, 16.x] # 支持的Node.js版本
+ 
     steps:
-      - name: Check out Git repository
-        uses: actions/checkout@v1
-
-      - name: Install Node.js, NPM and Yarn
-        uses: actions/setup-node@v1
-        with:
-          node-version: 16
-
-      - name: Build/release Electron app
-        uses: wenwuwu/action-electron-forge@v1.4.0
-        with:
-          # GitHub token, automatically provided to the action
-          # (No need to define this secret in the repo settings)
-          github_token: ${{ secrets.RELEASE_TOKEN }}
-
-          # If the commit is tagged with a version (e.g. "v1.0.0"),
-          # release the app after building
-          release: ${{ startsWith(github.ref, 'refs/tags/v') }}
+    - name: Checkout code # 检出代码
+      uses: actions/checkout@v2
+      
+    - name: Use Node.js ${{ matrix.node-version }} # 设置Node.js版本
+      uses: actions/setup-node@v2
+      with:
+        node-version: ${{ matrix.node-version }}
+        
+    - name: Install dependencies # 安装依赖项
+      run: npm install
+      
+    - name: Build Electron App # 构建Electron应用
+      run: npm run make # 假设你的构建脚本是`npm run build:electron`
+      
+    - name: Upload Artifacts # 上传构建产物（可选）
+      uses: actions/upload-artifact@v4
+      with:
+        name: electron-app-${{ matrix.node-version }} # 上传文件的名称，包含Node版本信息以区分版本
+        path: dist/ # 上传的目录路径，根据实际情况修改
