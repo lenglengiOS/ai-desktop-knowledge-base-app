@@ -20,8 +20,8 @@ jobs:
     steps:
       - name: Check out git repository
         uses: actions/checkout@v4  # 检出代码仓库
-        with:
-          token: ${{ secrets.RELEASE_TOKEN }}
+        # with:
+        #  token: ${{ secrets.RELEASE_TOKEN }}
 
       - name: Install Node.js
         uses: actions/setup-node@v4
@@ -32,7 +32,8 @@ jobs:
         run: |
           # npm i -g pnpm
           npm i -g yarn
-          yarn  # 安装项目依赖
+          # yarn  # 安装项目依赖
+          npm install
 
       - name: Build Electron App for windows
         if: matrix.os == 'windows-latest'  # 只在Windows上运行
