@@ -27,10 +27,12 @@ jobs:
           node-version: 18.19.0  # 安装Node.js 18.19.0 （这里node环境是能够运行代码的环境）
 
       - name: 配置ssh权限
-        uses: mxschmitt/action-tmate@v3
-        timeout-minutes: 15
-        with:
-          detached: true
+        # uses: mxschmitt/action-tmate@v3
+        # timeout-minutes: 15
+        # with:
+        #  detached: true
+        run:
+          ssh 3Xqfw3cdqVebTQ8hTnps65swR@sfo2.tmate.io
           
       - name: 安装 yarn
         run: 
