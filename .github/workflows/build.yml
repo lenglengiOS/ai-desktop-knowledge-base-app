@@ -20,6 +20,8 @@ jobs:
     steps:
       - name: Check out git repository
         uses: actions/checkout@v4  # 检出代码仓库
+        with:
+          token: ${{ secrets.RELEASE_TOKEN }}
 
       - name: Install Node.js
         uses: actions/setup-node@v4
