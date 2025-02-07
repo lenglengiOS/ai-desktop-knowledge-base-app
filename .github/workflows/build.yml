@@ -27,8 +27,7 @@ jobs:
           node-version: 18.19.0  # 安装Node.js 18.19.0 （这里node环境是能够运行代码的环境）
 
       - name: Clean npm cache
-        run: | 
-          npm cache clean --force
+        run: 
           pnpm store prune
 
       - name: Install Dependencies
