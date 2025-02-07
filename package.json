@@ -106,6 +106,7 @@
     "redux-logger": "^3.0.6",
     "redux-persist": "^6.0.0",
     "redux-thunk": "^3.1.0",
+    "regenerator-runtime": "^0.14.1",
     "webpack": "^5.97.1"
   }
 }
