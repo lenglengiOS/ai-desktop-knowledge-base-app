@@ -1,46 +1,47 @@
-name: macOS Build
+name: Build Electron App with Electron Forge
 
-on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+on: push
 
 jobs:
-  build-macos:
-    runs-on: macos-latest
+  build:
+    runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        arch: [x64, arm64]
-        target: [dmg, zip]
+        os: [macos-latest, windows-latest, ubuntu-latest]
+        include:
+          - os: macos-latest
+            platform: darwin
+            arch: x64
+          - os: macos-latest
+            platform: darwin
+            arch: arm64
+          - os: windows-latest
+            platform: win32
+            arch: x64
+          - os: ubuntu-latest
+            platform: linux
+            arch: x64
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: '20'
-    
-    - name: Install Python 3.11.4
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.11.4'
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
 
-    - name: Install dependencies
-      run: npm install
+      - name: Install dependencies
+        run: npm install
 
-    - name: Build application
-      run: npm run make
+      - name: Build Electron app
+        run: npm run make
+        env:
+          ELECTRON_FORGE_PLATFORM: ${{ matrix.platform }}
+          ELECTRON_FORGE_ARCH: ${{ matrix.arch }}
 
-    - name: Package application for macOS ${{ matrix.arch }} ${{ matrix.target }}
-      run: npx electron-forge make --platform=darwin --arch=${{ matrix.arch }} --targets="@electron-forge/maker-${{ matrix.target }}" --icon=public/avatar
-
-    - name: Upload Artifacts
-      uses: actions/upload-artifact@v3
-      with:
-        name: electron-app-${{ matrix.arch }}-${{ matrix.target }}
-        path: ${{ github.workspace }}/**/make/**/*.${{ matrix.target == 'dmg' && 'dmg' || 'zip' }}
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: electron-app-${{ matrix.platform }}-${{ matrix.arch }}
+          path: out/make/
