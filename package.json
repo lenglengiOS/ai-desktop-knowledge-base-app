@@ -78,6 +78,7 @@
     "@ant-design/colors": "^7.2.0",
     "@ant-design/fast-color": "^2.0.6",
     "@ant-design/icons": "^5.6.0",
+    "@ant-design/icons-svg": "^4.4.2",
     "@ant-design/x": "^1.0.5",
     "@babel/runtime": "^7.26.7",
     "@electron-forge/maker-dmg": "^7.6.1",
