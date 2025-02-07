@@ -40,7 +40,7 @@ jobs:
       run: npx electron-forge make --platform=darwin --arch=${{ matrix.arch }} --targets="@electron-forge/maker-${{ matrix.target }}" --icon=public/avatar
 
     - name: Upload Artifacts
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: electron-app-${{ matrix.arch }}-${{ matrix.target }}
         path: ${{ github.workspace }}/**/make/**/*.${{ matrix.target == 'dmg' && 'dmg' || 'zip' }}
