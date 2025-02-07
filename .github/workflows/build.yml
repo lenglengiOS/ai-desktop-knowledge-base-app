@@ -26,6 +26,9 @@ jobs:
         with:
           node-version: 18.19.0  # 安装Node.js 18.19.0 （这里node环境是能够运行代码的环境）
 
+      - name: 配置git权限
+          git config --global url.https://github.com/.insteadOf git@github.com
+          
       - name: 安装 yarn
         run: 
            npm install -g yarn
