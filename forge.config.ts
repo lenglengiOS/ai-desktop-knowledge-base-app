@@ -16,7 +16,7 @@ import PackageJson from "./package.json";
 
 const config: ForgeConfig = {
   packagerConfig: {
-    asar: true,
+    asar: false,
     name: "海豚AI助手",
     icon: ICON_URL,
     appVersion: PackageJson.version,
