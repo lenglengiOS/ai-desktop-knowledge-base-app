@@ -39,7 +39,9 @@ jobs:
       - name: Install Dependencies
         run: 
           yarn install  # 安装项目依赖
-
+          
+      - name: Clean existing DMG files
+        run: rm -f out/*.dmg
           
       - name: Build Electron App for windows
         if: matrix.os == 'windows-latest'  # 只在Windows上运行
@@ -54,7 +56,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.os }}
-          path: out  # 上传构建产物作为工作流artifact
+          path: out/app  # 上传构建产物作为工作流artifact
 
       - name: release
         uses: softprops/action-gh-release@v1
