@@ -30,6 +30,7 @@ const config: ForgeConfig = {
       platforms: ["win32"],
       config: {
         // Squirrel.Windows specific configuration (if needed)
+        overwrite: true, // 设置为 true 以覆盖已存在的文件
       },
     },
     // macOS 的 DMG 镜像文件
@@ -38,6 +39,7 @@ const config: ForgeConfig = {
       platforms: ["darwin"],
       config: {
         // DMG specific configuration (if needed)
+        overwrite: true, // 设置为 true 以覆盖已存在的 DMG 文件
       },
     },
   ],
