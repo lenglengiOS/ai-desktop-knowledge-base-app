@@ -13,11 +13,12 @@ import { mainConfig } from "./webpack.main.config";
 import { rendererConfig } from "./webpack.renderer.config";
 const ICON_URL = "./src/assets/images/icon";
 import PackageJson from "./package.json";
+const NAME = "海豚AI助手";
 
 const config: ForgeConfig = {
   packagerConfig: {
     asar: true,
-    name: "海豚AI助手",
+    name: NAME,
     icon: ICON_URL,
     appVersion: PackageJson.version,
     appCopyright: "Copyright © 2025 lengleng",
@@ -37,9 +38,12 @@ const config: ForgeConfig = {
     {
       name: "@electron-forge/maker-dmg",
       platforms: ["darwin"],
-      config: {
-        // DMG specific configuration (if needed)
-        overwrite: true, // 设置为 true 以覆盖已存在的 DMG 文件
+      config: (arch: string) => {
+        return {
+          // 根据架构生成不同的包名
+          name: `${NAME}-${arch}.dmg`,
+          overwrite: true,
+        };
       },
     },
   ],
