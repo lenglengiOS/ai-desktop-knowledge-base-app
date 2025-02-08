@@ -41,7 +41,7 @@ const config: ForgeConfig = {
       config: (arch: string) => {
         return {
           // 根据架构生成不同的包名
-          name: `${NAME}-${arch}.dmg`,
+          name: `${NAME}-${arch}`,
           overwrite: true,
         };
       },
