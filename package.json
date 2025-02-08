@@ -8,7 +8,7 @@
     "start": "electron-forge start",
     "package": "electron-forge package",
     "make:win": "electron-forge make",
-    "make:mac": "electron-forge make --arch=x64,arm64",
+    "make:mac": "electron-forge make --platform=darwin --arch=x64,arm64",
     "publish": "electron-forge publish",
     "lint": "eslint --ext .ts,.tsx ."
   },

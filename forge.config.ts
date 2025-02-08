@@ -27,7 +27,7 @@ const config: ForgeConfig = {
     // Windows 的 Squirrel 安装包
     {
       name: "@electron-forge/maker-squirrel",
-      platforms: ["win32", "darwin"],
+      platforms: ["win32"],
       config: {
         // Squirrel.Windows specific configuration (if needed)
       },
@@ -35,7 +35,7 @@ const config: ForgeConfig = {
     // macOS 的 DMG 镜像文件
     {
       name: "@electron-forge/maker-dmg",
-      platforms: ["x64", "arm64"],
+      platforms: ["darwin"],
       config: {
         // DMG specific configuration (if needed)
       },
