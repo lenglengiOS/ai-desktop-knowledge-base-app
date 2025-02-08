@@ -35,15 +35,8 @@ const config: ForgeConfig = {
     // 为各平台创建 ZIP 压缩包
     {
       name: "@electron-forge/maker-zip",
-      platforms: ["darwin", "linux", "win32"], // Specify platforms if needed
+      platforms: ["darwin", "linux", "win32", "x64", "arm64"], // Specify platforms if needed
       config: {},
-    },
-    // RPM-based Linux 系统的 RPM 包
-    {
-      name: "@electron-forge/maker-rpm",
-      config: {
-        // RPM specific configuration (if needed)
-      },
     },
     // macOS 的 DMG 镜像文件
     {
@@ -51,13 +44,6 @@ const config: ForgeConfig = {
       platforms: ["x64", "arm64"],
       config: {
         // DMG specific configuration (if needed)
-      },
-    },
-    // Debian-based Linux 系统的 DEB 包
-    {
-      name: "@electron-forge/maker-deb",
-      config: {
-        // DEB specific configuration (if needed)
       },
     },
   ],
