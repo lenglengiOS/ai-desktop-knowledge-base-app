@@ -1,0 +1,2 @@
+(self.webpackChunkai_desktop_knowledge_base_app=self.webpackChunkai_desktop_knowledge_base_app||[]).push([[1276],{19443:n=>{n.exports=function(n){return{name:"PHP template",subLanguage:"xml",contains:[{begin:/<\?(php|=)?/,end:/\?>/,subLanguage:"php",contains:[{begin:"/\\*",end:"\\*/",skip:!0},{begin:'b"',end:'"',skip:!0},{begin:"b'",end:"'",skip:!0},n.inherit(n.APOS_STRING_MODE,{illegal:null,className:null,contains:null,skip:!0}),n.inherit(n.QUOTE_STRING_MODE,{illegal:null,className:null,contains:null,skip:!0})]}]}}}}]);
+//# sourceMappingURL=index.js.map

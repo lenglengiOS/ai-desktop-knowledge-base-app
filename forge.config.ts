@@ -81,10 +81,15 @@ const config: ForgeConfig = {
       name: "@electron-forge/publisher-github",
       config: {
         repository: {
-          owner: "your-github-username",
-          name: "your-repo-name",
+          owner: "lenglengiOS",
+          name: "ai-desktop-knowledge-base-app",
         },
-        draft: true,
+        // 自动发布到 GitHub Releases
+        draft: false,
+        // 自动更新发行说明
+        prerelease: false,
+        // 认证令牌，用于访问 GitHub API
+        authToken: process.env.GITHUB_TOKEN,
       },
     },
   ],

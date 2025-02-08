@@ -1,9 +1,13 @@
 {
   "name": "ai-desktop-knowledge-base-app",
   "productName": "ai-desktop-knowledge-base-app",
-  "version": "1.0.1",
+  "version": "1.0.5",
   "description": "My Electron application description",
   "main": ".webpack/main",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lenglengiOS/ai-desktop-knowledge-base-app.git"
+  },
   "scripts": {
     "start": "electron-forge start",
     "package": "electron-forge package",
@@ -23,6 +27,7 @@
     "@electron-forge/plugin-auto-unpack-natives": "^7.6.1",
     "@electron-forge/plugin-fuses": "^7.6.1",
     "@electron-forge/plugin-webpack": "^7.6.1",
+    "@electron-forge/publisher-github": "^7.6.0",
     "@electron/fuses": "^1.8.0",
     "@types/react": "^19.0.8",
     "@types/react-dom": "^19.0.3",
@@ -75,6 +80,7 @@
     "redux-deep-persist": "^1.0.6",
     "redux-logger": "^3.0.6",
     "redux-persist": "^6.0.0",
-    "redux-thunk": "^3.1.0"
+    "redux-thunk": "^3.1.0",
+    "update-electron-app": "^3.1.1"
   }
 }
