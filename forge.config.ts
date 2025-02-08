@@ -32,12 +32,6 @@ const config: ForgeConfig = {
         // Squirrel.Windows specific configuration (if needed)
       },
     },
-    // 为各平台创建 ZIP 压缩包
-    {
-      name: "@electron-forge/maker-zip",
-      platforms: ["darwin", "linux", "win32", "x64", "arm64"], // Specify platforms if needed
-      config: {},
-    },
     // macOS 的 DMG 镜像文件
     {
       name: "@electron-forge/maker-dmg",
