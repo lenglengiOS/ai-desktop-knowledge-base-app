@@ -16,7 +16,6 @@ jobs:
        matrix:
          os: [windows-latest, macos-latest]  # 在Windows和macOS上运行任务
          arch: [x64, arm64]
-         target: [dmg, zip]
 
   build-macos:
     runs-on: macos-latest
