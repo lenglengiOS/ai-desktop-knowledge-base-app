@@ -1,2 +1,0 @@
-(self.webpackChunkai_desktop_knowledge_base_app=self.webpackChunkai_desktop_knowledge_base_app||[]).push([[6195],{72581:e=>{e.exports=function(e){return{name:"LDIF",contains:[{className:"attribute",begin:"^dn",end:": ",excludeEnd:!0,starts:{end:"$",relevance:0},relevance:10},{className:"attribute",begin:"^\\w",end:": ",excludeEnd:!0,starts:{end:"$",relevance:0}},{className:"literal",begin:"^-",end:"$"},e.HASH_COMMENT_MODE]}}}}]);
-//# sourceMappingURL=index.js.map

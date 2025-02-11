@@ -9,7 +9,6 @@ import React, {
 import { Bubble, BubbleProps } from "@ant-design/x";
 import { Footer } from "antd/es/layout/layout";
 import LHLSender from "../sender/sender";
-import styles from "./panel.module.css";
 import * as Request from "../../api/request";
 import * as PanelActions from "../../store/actions/panelAction";
 import * as KnowledgeActions from "../../store/actions/knowledgeAction";
@@ -33,6 +32,7 @@ import {
 } from "@ant-design/icons";
 import copy from "copy-to-clipboard";
 import AddKnowledgeModal from "../knowledge/addKnowledgeModal";
+import styles from "./panel.module.css";
 
 interface Iprops {}
 
@@ -111,14 +111,7 @@ const LHLPanel: FC<Iprops> = () => {
   };
 
   return (
-    <div
-      style={{
-        textAlign: "center",
-        height: "100vh",
-        display: "flex",
-        flexDirection: "column",
-      }}
-    >
+    <div className={styles.container}>
       <div
         style={{
           textAlign: "center",
@@ -162,17 +155,13 @@ const LHLPanel: FC<Iprops> = () => {
 };
 
 const BubbleFotter = ({ content }: any) => {
-  const [messageApi, contextHolder] = message.useMessage();
+  // const [messageApi, contextHolder] = message.useMessage();
   const childRef = useRef(null);
 
   const copyContent = () => {
     copy(content);
-    messageApi.open({
-      type: "success",
-      content: "已复制到粘贴板",
-    });
+    message.success("已复制到粘贴板");
   };
-
   const add = () => {
     if (childRef.current) {
       childRef.current.showModal();
@@ -182,7 +171,6 @@ const BubbleFotter = ({ content }: any) => {
   return (
     <>
       <Flex>
-        {contextHolder}
         <Tooltip title="复制到粘贴板">
           <Button
             onClick={copyContent}
