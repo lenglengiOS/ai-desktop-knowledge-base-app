@@ -4,7 +4,9 @@ permissions:
   contents: write  # 给予写入仓库内容的权限
 
 on:
-  push
+  push:
+    tags:
+      - v*  # 当推送以v开头的标签时触发此工作流
 
 jobs:
   release:
@@ -60,7 +62,7 @@ jobs:
 
       - name: release
         uses: softprops/action-gh-release@v1
-        # if: startsWith(github.ref, 'refs/tags/')  # 只在推送标签时创建release
+        if: startsWith(github.ref, 'refs/tags/')  # 只在推送标签时创建release
         with:
           files: 'out/**'  # 将out目录下所有文件添加到release
 
