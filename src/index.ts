@@ -48,7 +48,7 @@ const createWindow = (): void => {
           ...details.responseHeaders,
           "Content-Security-Policy": [
             "connect-src 'self' https://api.moonshot.cn/v1/chat/completions",
-            "connect-src 'self' https://api.deepseek.com",
+            // "connect-src 'self' https://api.deepseek.com",
           ],
         },
       });

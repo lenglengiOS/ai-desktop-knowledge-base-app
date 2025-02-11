@@ -36,12 +36,6 @@ import styles from "./panel.module.css";
 
 interface Iprops {}
 
-const renderMarkdown: BubbleProps["messageRender"] = (content) => (
-  <Typography style={{ textAlign: "left" }}>
-    <LHLMarkdownContent content={content} />
-  </Typography>
-);
-
 let stream: any;
 
 const roles: GetProp<typeof Bubble.List, "roles"> = {
@@ -123,10 +117,12 @@ const LHLPanel: FC<Iprops> = () => {
               role: placement === "start" ? "ai" : "user",
               content,
               loading: placement === "start" && content === "",
-              messageRender: placement === "end" ? null : renderMarkdown,
+              messageRender: () => {
+                return <MessageItem content={content} index={i} />;
+              },
               footer:
                 placement === "start" && !loading ? (
-                  <BubbleFotter content={content} />
+                  <BubbleFotter content={content} index={i} />
                 ) : null,
               variant: placement === "start" ? "filled" : "shadow",
             };
@@ -145,8 +141,17 @@ const LHLPanel: FC<Iprops> = () => {
   );
 };
 
-const BubbleFotter = ({ content }: any) => {
-  // const [messageApi, contextHolder] = message.useMessage();
+const MessageItem = React.memo(({ content, index }: any) => {
+  // console.log("---------MessageItem----------", index);
+  return (
+    <Typography style={{ textAlign: "left" }}>
+      <LHLMarkdownContent content={content} />
+    </Typography>
+  );
+});
+
+const BubbleFotter = React.memo(({ content, index }: any) => {
+  console.log("---------BubbleFotter----------", index);
   const childRef = useRef(null);
 
   const copyContent = () => {
@@ -182,6 +187,6 @@ const BubbleFotter = ({ content }: any) => {
       <AddKnowledgeModal ref={childRef} content={content} />
     </>
   );
-};
+});
 
 export default LHLPanel;

@@ -21,8 +21,8 @@ const panelReducer = (state = initState, action: ActionType) => {
     // 添加消息
     case Types.ADD_MESSAGE:
       let messages = state.messages;
-      messages.push(payload);
-      return { ...state, messages };
+      messages.length + 1;
+      return { ...state, messages: [...messages, payload] };
 
     // 更新消息
     case Types.UPDATE_MESSAGE:

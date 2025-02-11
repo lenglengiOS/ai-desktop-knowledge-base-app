@@ -21,14 +21,12 @@ const App = () => {
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
-        <React.StrictMode>
-          <HashRouter>
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/knowledgeDetail" element={<KnowledgeDetail />} />
-            </Routes>
-          </HashRouter>
-        </React.StrictMode>
+        <HashRouter>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/knowledgeDetail" element={<KnowledgeDetail />} />
+          </Routes>
+        </HashRouter>
       </PersistGate>
     </Provider>
   );

@@ -31,7 +31,7 @@ const items: MenuItem[] = [
   getItem("知识库", "3", <FileOutlined />),
 ];
 
-const App: React.FC = () => {
+const Home: React.FC = () => {
   const [collapsed, setCollapsed] = useState(false);
   const [key, setKey] = useState("1");
   const {
@@ -69,4 +69,4 @@ const App: React.FC = () => {
   );
 };
 
-export default App;
+export default Home;
