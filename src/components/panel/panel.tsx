@@ -151,7 +151,7 @@ const MessageItem = React.memo(({ content, index }: any) => {
 });
 
 const BubbleFotter = React.memo(({ content, index }: any) => {
-  console.log("---------BubbleFotter----------", index);
+  // console.log("---------BubbleFotter----------", index);
   const childRef = useRef(null);
 
   const copyContent = () => {

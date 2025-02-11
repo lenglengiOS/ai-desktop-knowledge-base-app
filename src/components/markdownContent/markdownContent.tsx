@@ -3,7 +3,7 @@ import MarkdownIt from "markdown-it";
 import markdownItHighlight from "markdown-it-highlight";
 
 const md = new MarkdownIt();
-md.use(markdownItHighlight);
+// md.use(markdownItHighlight);
 
 interface Iprops {
   content: string;
