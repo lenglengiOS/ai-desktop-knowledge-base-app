@@ -10,9 +10,15 @@
     "sourceMap": true,
     "baseUrl": ".",
     "outDir": "dist",
+    // 支持 CSS 模块
+    "checkJs": false,
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "noEmit": true,
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "allowSyntheticDefaultImports": true, // 对于 CSS 模块，通常需要这个选项来允许默认导入
+    // 支持 CSS 模块
+    "types": ["@types/css-modules"],
     "paths": {
       "*": ["node_modules/*"]
     }

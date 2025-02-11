@@ -111,17 +111,8 @@ const LHLPanel: FC<Iprops> = () => {
   };
 
   return (
-    <div className={styles.container}>
-      <div
-        style={{
-          textAlign: "center",
-          height: "100vh",
-          display: "flex",
-          flexDirection: "column",
-          overflow: "auto",
-          padding: 24,
-        }}
-      >
+    <div className={styles["container"]}>
+      <div className={styles["msg-con"]}>
         <Bubble.List
           roles={roles}
           style={{ textAlign: "left", marginBottom: 24 }}

@@ -1,15 +1,15 @@
 .container {
-  text-align: "center";
-  height: "100vh";
-  display: "flex";
-  flex-direction: "column";
+  text-align: center;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 .msg-con {
-  text-align: "center";
-  height: "100vh";
-  display: "flex";
-  flex-direction: "column";
-  overflow: "auto";
-  padding: 24;
+  text-align: center;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+  padding: 24px;
 }
