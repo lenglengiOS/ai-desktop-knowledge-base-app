@@ -22,6 +22,7 @@ type ChatType = {
   onUpdate: (message: string) => void;
   onFinish: (message: string) => void;
   getStream: (stream: any) => void;
+  onError: (err: string) => void;
 };
 
 // AI聊天
@@ -30,6 +31,7 @@ export async function chat({
   onUpdate,
   onFinish,
   getStream,
+  onError,
 }: ChatType) {
   let stream;
   try {
@@ -57,12 +59,7 @@ export async function chat({
       }
     }
   } catch (err) {
-    if (err instanceof OpenAI.APIError) {
-      console.log(err);
-      console.log(err.message); // 错误类型消息
-      console.log(err.headers); // 响应头
-    } else {
-      throw err;
-    }
+    onError("网络繁忙，请稍后再试");
+    throw err;
   }
 }

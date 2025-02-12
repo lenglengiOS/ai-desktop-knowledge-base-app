@@ -32,6 +32,11 @@ import {
 } from "@ant-design/icons";
 import copy from "copy-to-clipboard";
 import AddKnowledgeModal from "../knowledge/addKnowledgeModal";
+import { throttleTimestamp, debounce, delay } from "../../utils/common";
+import MessageItem from "./messageItem";
+import markdownit from "markdown-it";
+
+const md = markdownit({ html: true, breaks: true });
 import styles from "./panel.module.css";
 
 interface Iprops {}
@@ -50,12 +55,26 @@ const roles: GetProp<typeof Bubble.List, "roles"> = {
 
 const LHLPanel: FC<Iprops> = () => {
   const [loading, setLoading] = useState<boolean>(false);
+  const messageListRef = useRef(null);
+
   const dispatch = useDispatch();
   const { messages }: PanelStateType = useSelector<ReducersType>(
     (state) => state.panel
   );
 
-  const onSubmit = (content: string) => {
+  const updateMesssage = (message: string) => {
+    console.log("更新iiiii");
+    dispatch(
+      PanelActions.updateMesssageAction({
+        placement: "start",
+        content: message,
+      })
+    );
+  };
+
+  const debounceUpdateMessage = debounce(updateMesssage, 800);
+
+  const onSubmit = async (content: string) => {
     // 第一步，把用户输入的消息存入Store
     let msg = {
       placement: "end",
@@ -63,7 +82,7 @@ const LHLPanel: FC<Iprops> = () => {
     };
     dispatch(PanelActions.addMesssageAction(msg));
 
-    // 第二步，把ai返回的数据存入Store
+    // 第二步，把ai返回的数据存入Store（此处延时2秒，等待页面更新）
     // 1、申请一个消息占位
     dispatch(
       PanelActions.addMesssageAction({
@@ -72,27 +91,51 @@ const LHLPanel: FC<Iprops> = () => {
       })
     );
 
+    console.log(
+      "------messageListRef------: ",
+      messageListRef.current.scrollHeight
+    );
+
+    if (messageListRef.current) {
+      // messageListRef.current.scrollIntoView({ behavior: "smooth" });
+      messageListRef.current.scrollTo = messageListRef.current.scrollHeight;
+    }
+
+    return;
+
     // 2、更新消息
     setLoading(true);
     Request.chat({
       content,
       onUpdate: (message: string) => {
-        console.log("更新： ", message);
+        debounceUpdateMessage(message);
+      },
+
+      onFinish: (message: string) => {
+        setLoading(false);
+        // dispatch(
+        //   PanelActions.updateMesssageAction({
+        //     placement: "start",
+        //     content: message,
+        //   })
+        // );
+      },
+
+      // 记录stream，用于终止流式请求
+      getStream: (st: any) => {
+        stream = st;
+      },
+
+      onError: (err) => {
+        message.error(err);
+        setLoading(false);
+        // 显示错误消息
         dispatch(
           PanelActions.updateMesssageAction({
             placement: "start",
-            content: message,
+            content: "网络繁忙，请稍后再试",
           })
         );
-      },
-
-      onFinish: () => {
-        console.log("结束： ");
-        setLoading(false);
-      },
-
-      getStream: (st: any) => {
-        stream = st;
       },
     });
   };
@@ -108,25 +151,47 @@ const LHLPanel: FC<Iprops> = () => {
     <div className={styles["container"]}>
       <div className={styles["msg-con"]}>
         <Bubble.List
+          ref={messageListRef}
           roles={roles}
-          style={{ textAlign: "left", marginBottom: 24 }}
-          items={messages.map((item: any, i: number) => {
-            const { content, placement } = item;
-            return {
-              key: i.toString(),
-              role: placement === "start" ? "ai" : "user",
-              content,
-              loading: placement === "start" && content === "",
-              messageRender: () => {
-                return <MessageItem content={content} index={i} />;
-              },
-              footer:
-                placement === "start" && !loading ? (
-                  <BubbleFotter content={content} index={i} />
-                ) : null,
-              variant: placement === "start" ? "filled" : "shadow",
-            };
-          })}
+          autoScroll={true}
+          style={{
+            textAlign: "left",
+            marginTop: 24,
+          }}
+          items={messages.map(
+            ({ content, placement, createTime }: any, i: number) => {
+              return {
+                key: createTime,
+                styles: {
+                  content: {
+                    backgroundColor:
+                      placement === "start" ? "rgb(250,250,248)" : "#EFEFEF", // 设置气泡内容区域的背景色
+                    padding: placement === "start" ? "10px" : 0, // 设置气泡内容区域的内边距
+                    paddingLeft: "10px",
+                    paddingRight: "10px",
+                  },
+                },
+                content,
+                role: placement === "start" ? "ai" : "user",
+                loading: placement === "start" && content === "",
+                // messageRender: (content) => renderMarkdown(content),
+                messageRender: (content) => (
+                  <MessageItem content={content} index={i} />
+                ),
+                typing:
+                  placement === "start" ? { step: 2, interval: 20 } : false,
+                footer:
+                  placement === "start" && !loading ? (
+                    <BubbleFotter
+                      content={content}
+                      index={i}
+                      loading={loading}
+                    />
+                  ) : null,
+                variant: placement === "start" ? "filled" : "shadow",
+              };
+            }
+          )}
         />
       </div>
       <Footer
@@ -141,26 +206,18 @@ const LHLPanel: FC<Iprops> = () => {
   );
 };
 
-const MessageItem = React.memo(({ content, index }: any) => {
-  // console.log("---------MessageItem----------", index);
-  return (
-    <Typography style={{ textAlign: "left" }}>
-      <LHLMarkdownContent content={content} />
-    </Typography>
-  );
-});
-
-const BubbleFotter = React.memo(({ content, index }: any) => {
+const BubbleFotter = React.memo(({ content, index, loading }: any) => {
   // console.log("---------BubbleFotter----------", index);
-  const childRef = useRef(null);
+  // 添加知识库的ref
+  const addModalRef = useRef(null);
 
   const copyContent = () => {
     copy(content);
     message.success("已复制到粘贴板");
   };
   const add = () => {
-    if (childRef.current) {
-      childRef.current.showModal();
+    if (addModalRef.current) {
+      addModalRef.current.showModal();
     }
   };
 
@@ -169,6 +226,7 @@ const BubbleFotter = React.memo(({ content, index }: any) => {
       <Flex>
         <Tooltip title="复制到粘贴板">
           <Button
+            disabled={loading}
             onClick={copyContent}
             size="middle"
             type="text"
@@ -177,6 +235,7 @@ const BubbleFotter = React.memo(({ content, index }: any) => {
         </Tooltip>
         <Tooltip title="添加到知识库">
           <Button
+            disabled={loading}
             onClick={add}
             size="middle"
             type="text"
@@ -184,7 +243,7 @@ const BubbleFotter = React.memo(({ content, index }: any) => {
           />
         </Tooltip>
       </Flex>
-      <AddKnowledgeModal ref={childRef} content={content} />
+      <AddKnowledgeModal ref={addModalRef} content={content} />
     </>
   );
 });

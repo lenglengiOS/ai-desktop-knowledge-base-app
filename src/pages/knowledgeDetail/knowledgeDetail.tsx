@@ -16,12 +16,14 @@ import hljs from "highlight.js";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 // @ts-ignore
 import { coldarkCold } from "react-syntax-highlighter/dist/cjs/styles/prism";
+import { LHLMarkdownContent } from "../../components/index";
 
 interface Iprops {
   item?: knowledgeItemType;
 }
 
 const LHLKnowledgeDetail: FC<Iprops> = ({ item }) => {
+  return <LHLMarkdownContent content={item.content} />;
   return (
     <ReactMarkdown
       children={item.content}
