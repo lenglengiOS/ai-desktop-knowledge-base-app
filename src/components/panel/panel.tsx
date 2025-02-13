@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { ReducersType } from "../../store/reducers";
 import { PanelStateType } from "../../store/reducers/panelReducer";
 import { GetProp, message } from "antd/es";
-import { throttle } from "../../utils/common";
+import { throttle, delay } from "../../utils/common";
 import MessageItem from "./messageItem";
 import styles from "./panel.module.css";
 import BubbleFotter from "./bubbleFotter";
@@ -148,14 +148,9 @@ const LHLPanel: FC<Iprops> = () => {
                   placement === "start"
                     ? { step: Math.floor(content.length / 8), interval: 20 }
                     : false,
-                footer:
-                  placement === "start" && !loading ? (
-                    <BubbleFotter
-                      content={content}
-                      index={i}
-                      loading={loading}
-                    />
-                  ) : null,
+                footer: placement === "start" && (
+                  <BubbleFotter content={content} index={i} loading={loading} />
+                ),
                 variant: placement === "start" ? "filled" : "shadow",
               };
             }

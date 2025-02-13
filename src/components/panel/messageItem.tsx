@@ -7,11 +7,7 @@ interface Iprops {
 }
 
 const LHLMessageItem: FC<Iprops> = forwardRef(({ content }, ref) => {
-  return (
-    <div style={{ textAlign: "left" }}>
-      <LHLMarkdownContent content={content} />
-    </div>
-  );
+  return <LHLMarkdownContent content={content} />;
 });
 
 export default LHLMessageItem;
