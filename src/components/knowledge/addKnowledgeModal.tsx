@@ -1,11 +1,10 @@
 import React, {
-  useEffect,
   useRef,
   useState,
   forwardRef,
   useImperativeHandle,
 } from "react";
-import { Button, Modal, Input, message } from "antd";
+import { Modal, Input, message } from "antd";
 import type { DraggableData, DraggableEvent } from "react-draggable";
 import Draggable from "react-draggable";
 import * as KnowledgeActions from "../../store/actions/knowledgeAction";
@@ -42,8 +41,6 @@ const AddKnowledgeModal: React.FC<IProps> = forwardRef((props, ref) => {
 
   const handleOk = (e: React.MouseEvent<HTMLElement>) => {
     let { content } = props;
-    console.log(name);
-    console.log(content);
     setOpen(false);
     messageApi.open({
       type: "success",

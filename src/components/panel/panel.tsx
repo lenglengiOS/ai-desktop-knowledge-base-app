@@ -74,7 +74,6 @@ const LHLPanel: FC<Iprops> = () => {
     Request.chat({
       content,
       onUpdate: (message: string) => {
-        console.log("收到服务端流式数据");
         onUpdateMessage(message);
       },
 
@@ -147,7 +146,7 @@ const LHLPanel: FC<Iprops> = () => {
                 ),
                 typing:
                   placement === "start"
-                    ? { step: Math.floor(content.length / 5), interval: 20 }
+                    ? { step: Math.floor(content.length / 8), interval: 20 }
                     : false,
                 footer:
                   placement === "start" && !loading ? (
@@ -176,7 +175,6 @@ const LHLPanel: FC<Iprops> = () => {
 };
 
 const BubbleFotter = React.memo(({ content, index, loading }: any) => {
-  // console.log("---------BubbleFotter----------", index);
   // 添加知识库的ref
   const addModalRef = useRef(null);
 

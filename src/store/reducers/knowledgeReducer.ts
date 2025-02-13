@@ -21,10 +21,10 @@ const initState: KnowledgeStateType = {
 
 const knowledgeReducer = (state = initState, action: ActionType) => {
   const payload = action.payload;
+  let knowledgeList = state.knowledgeList;
   switch (action.type) {
     // 添加知识库
     case Types.ADD_KNOWLEDGE:
-      let knowledgeList = state.knowledgeList;
       // 以当前时间戳作为id
       let timestamp = new Date().getTime();
       // 获取当前时间
@@ -40,11 +40,10 @@ const knowledgeReducer = (state = initState, action: ActionType) => {
       return { ...state, knowledgeList };
 
     // 修改知识库
-    // case Types.UPDATE_KNOWLEDGE:
-    //   let tempMessages = state.messages;
-    //   let length = tempMessages.length;
-    //   tempMessages[length - 1] = payload;
-    //   return { ...state, messages: tempMessages };
+    case Types.DELETE_KNOWLEDGE:
+      let { index } = payload;
+      knowledgeList.splice(index, 1); // 删除指定下标的元素
+      return { ...state, messages: knowledgeList };
 
     default:
       return state;

@@ -12,11 +12,11 @@ export const addKnowledgeAction: any = (knowledge: knowledgeItemType) => {
   };
 };
 
-// export const updateKnowledgeAction: any = (knowledge: knowledgeItemType) => {
-//   return (dispatch: Dispatch) => {
-//     dispatch({
-//       type: Types.UPDATE_MESSAGE,
-//       payload: knowledge,
-//     });
-//   };
-// };
+export const deleteKnowledgeAction: any = (index: number) => {
+  return (dispatch: Dispatch) => {
+    dispatch({
+      type: Types.DELETE_KNOWLEDGE,
+      payload: { index },
+    });
+  };
+};
