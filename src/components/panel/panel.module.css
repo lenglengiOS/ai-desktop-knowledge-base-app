@@ -12,5 +12,16 @@
   flex-direction: column;
   overflow: auto;
   padding: 24px;
+  padding-right: 0;
   padding-bottom: 0;
+}
+
+.empty {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+  text-align: left;
 }

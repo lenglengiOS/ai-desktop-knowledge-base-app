@@ -9,8 +9,16 @@ import {
   Popconfirm,
   PopconfirmProps,
   message,
+  Button,
+  Space,
 } from "antd";
-import { EditOutlined, DeleteOutlined, EyeOutlined } from "@ant-design/icons";
+import {
+  EditOutlined,
+  DeleteOutlined,
+  EyeOutlined,
+  EllipsisOutlined,
+  ShareAltOutlined,
+} from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { ReducersType } from "../../../src/store/reducers";
 import { PanelStateType } from "../../../src/store/reducers/panelReducer";
@@ -24,6 +32,7 @@ import KnowledgeDetail from "../../pages/knowledgeDetail/knowledgeDetail";
 import { useWindowSize } from "../../../src/hooks/commonHooks";
 import styles from "./knowledge.module.css";
 import { deleteKnowledgeAction } from "../../../src/store/actions/knowledgeAction";
+import { Welcome } from "@ant-design/x/es";
 
 interface Iprops {}
 
@@ -57,6 +66,18 @@ const LHLKnowledge: FC<Iprops> = () => {
   return (
     <div className={styles["container"]}>
       <div className={styles["list-con"]}>
+        {/* 控提示 */}
+        {knowledgeList.length === 0 && (
+          <div className={styles["empty"]}>
+            <Welcome
+              variant="borderless"
+              icon="https://mdn.alipayobjects.com/huamei_iwk9zp/afts/img/A*s5sNRo5LjfQAAAAAAAAAAAAADgCCAQ/fmt.webp"
+              title="Hello，我是海豚AI助手！"
+              description="这里是知识库，您的AI成果收纳箱，您现在还没有任何知识成果, 快去工作面板创作吧~"
+            />
+          </div>
+        )}
+        {/* 列表渲染 */}
         <Flex wrap gap="small">
           {knowledgeList.map((item: knowledgeItemType, index: number) => (
             <Card

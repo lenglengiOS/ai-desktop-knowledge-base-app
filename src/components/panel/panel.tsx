@@ -1,27 +1,17 @@
-import React, {
-  useState,
-  FC,
-  useRef,
-  useEffect,
-  useImperativeHandle,
-  forwardRef,
-} from "react";
-import { Bubble, BubbleProps } from "@ant-design/x";
+import React, { useState, FC } from "react";
+import { Bubble, Welcome } from "@ant-design/x";
 import { Footer } from "antd/es/layout/layout";
 import LHLSender from "../sender/sender";
 import * as Request from "../../api/request";
 import * as PanelActions from "../../store/actions/panelAction";
-import * as KnowledgeActions from "../../store/actions/knowledgeAction";
 import { useDispatch, useSelector } from "react-redux";
 import { ReducersType } from "../../store/reducers";
 import { PanelStateType } from "../../store/reducers/panelReducer";
-import { Button, Flex, GetProp, Tooltip, message } from "antd/es";
-import { CopyOutlined, FolderAddOutlined } from "@ant-design/icons";
-import copy from "copy-to-clipboard";
-import AddKnowledgeModal from "../knowledge/addKnowledgeModal";
+import { GetProp, message } from "antd/es";
 import { throttle } from "../../utils/common";
 import MessageItem from "./messageItem";
 import styles from "./panel.module.css";
+import BubbleFotter from "./bubbleFotter";
 
 let stream: any;
 const roles: GetProp<typeof Bubble.List, "roles"> = {
@@ -117,11 +107,22 @@ const LHLPanel: FC<Iprops> = () => {
   return (
     <div className={styles["container"]}>
       <div className={styles["msg-con"]}>
+        {messages.length === 0 && (
+          <div className={styles["empty"]}>
+            <Welcome
+              variant="borderless"
+              icon="https://mdn.alipayobjects.com/huamei_iwk9zp/afts/img/A*s5sNRo5LjfQAAAAAAAAAAAAADgCCAQ/fmt.webp"
+              title="Hello，我是海豚AI助手！"
+              description="这里是您的创作区域，您只需要向我说明需求，AI会自动给您生成方案~"
+            />
+          </div>
+        )}
         <Bubble.List
           roles={roles}
           autoScroll={true}
           style={{
             textAlign: "left",
+            paddingRight: 24,
           }}
           items={messages.map(
             ({ content, placement, createTime }: any, i: number) => {
@@ -172,46 +173,5 @@ const LHLPanel: FC<Iprops> = () => {
     </div>
   );
 };
-
-const BubbleFotter = React.memo(({ content, index, loading }: any) => {
-  // 添加知识库的ref
-  const addModalRef = useRef(null);
-
-  const copyContent = () => {
-    copy(content);
-    message.success("已复制到粘贴板");
-  };
-  const add = () => {
-    if (addModalRef.current) {
-      addModalRef.current.showModal();
-    }
-  };
-
-  return (
-    <>
-      <Flex>
-        <Tooltip title="复制到粘贴板">
-          <Button
-            disabled={loading}
-            onClick={copyContent}
-            size="middle"
-            type="text"
-            icon={<CopyOutlined />}
-          />
-        </Tooltip>
-        <Tooltip title="添加到知识库">
-          <Button
-            disabled={loading}
-            onClick={add}
-            size="middle"
-            type="text"
-            icon={<FolderAddOutlined />}
-          />
-        </Tooltip>
-      </Flex>
-      <AddKnowledgeModal ref={addModalRef} content={content} />
-    </>
-  );
-});
 
 export default LHLPanel;

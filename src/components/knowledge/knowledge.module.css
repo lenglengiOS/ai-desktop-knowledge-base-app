@@ -10,11 +10,19 @@
   overflow: auto;
   padding: 24px;
   align-items: start;
-  background-color: rgb(240, 242, 245);
 }
 
 .content {
   height: 150px;
   overflow-wrap: break-word;
   overflow: hidden;
+}
+
+.empty {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  align-items: center;
 }
