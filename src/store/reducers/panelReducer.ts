@@ -20,9 +20,7 @@ const panelReducer = (state = initState, action: ActionType) => {
   switch (action.type) {
     // 添加消息
     case Types.ADD_MESSAGE:
-      let messages = state.messages.slice(-49);
-      messages.length + 1;
-
+      let messages = state.messages;
       return {
         ...state,
         messages: [...messages, { ...payload, createTime: Date.now() }],
@@ -30,9 +28,11 @@ const panelReducer = (state = initState, action: ActionType) => {
 
     // 更新消息
     case Types.UPDATE_MESSAGE:
-      let tempMessages = state.messages;
+      let { isFinish, content } = payload;
+      // 如果isFinish=true,则截取最近50条数据
+      let tempMessages = isFinish ? state.messages.slice(-50) : state.messages;
       let length = tempMessages.length;
-      tempMessages[length - 1].content = payload.content;
+      tempMessages[length - 1].content = content;
       return { ...state, messages: tempMessages };
 
     default:

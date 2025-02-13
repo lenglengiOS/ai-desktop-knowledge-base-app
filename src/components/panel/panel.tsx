@@ -14,35 +14,16 @@ import * as PanelActions from "../../store/actions/panelAction";
 import * as KnowledgeActions from "../../store/actions/knowledgeAction";
 import { useDispatch, useSelector } from "react-redux";
 import { ReducersType } from "../../store/reducers";
-import {
-  MessageItemType,
-  PanelStateType,
-} from "../../store/reducers/panelReducer";
-import { Button, Flex, GetProp, Tooltip, Typography, message } from "antd/es";
-import { LHLMarkdownContent } from "../../components/index";
-import { ChatCompletionChunk } from "openai/resources";
-import { Stream } from "openai/streaming";
-import {
-  CopyOutlined,
-  FolderAddOutlined,
-  FrownOutlined,
-  SmileOutlined,
-  SyncOutlined,
-  UserOutlined,
-} from "@ant-design/icons";
+import { PanelStateType } from "../../store/reducers/panelReducer";
+import { Button, Flex, GetProp, Tooltip, message } from "antd/es";
+import { CopyOutlined, FolderAddOutlined } from "@ant-design/icons";
 import copy from "copy-to-clipboard";
 import AddKnowledgeModal from "../knowledge/addKnowledgeModal";
-import { throttleTimestamp, debounce, delay } from "../../utils/common";
+import { throttle } from "../../utils/common";
 import MessageItem from "./messageItem";
-import markdownit from "markdown-it";
-
-const md = markdownit({ html: true, breaks: true });
 import styles from "./panel.module.css";
 
-interface Iprops {}
-
 let stream: any;
-
 const roles: GetProp<typeof Bubble.List, "roles"> = {
   ai: {
     placement: "start",
@@ -53,28 +34,25 @@ const roles: GetProp<typeof Bubble.List, "roles"> = {
   },
 };
 
+interface Iprops {}
 const LHLPanel: FC<Iprops> = () => {
   const [loading, setLoading] = useState<boolean>(false);
-  const messageListRef = useRef(null);
 
   const dispatch = useDispatch();
   const { messages }: PanelStateType = useSelector<ReducersType>(
     (state) => state.panel
   );
 
-  const updateMesssage = (message: string) => {
-    console.log("更新iiiii");
+  const onUpdateMessage = throttle((message: string) => {
     dispatch(
       PanelActions.updateMesssageAction({
         placement: "start",
         content: message,
       })
     );
-  };
+  }, 500);
 
-  const debounceUpdateMessage = debounce(updateMesssage, 800);
-
-  const onSubmit = async (content: string) => {
+  const onSubmit = (content: string) => {
     // 第一步，把用户输入的消息存入Store
     let msg = {
       placement: "end",
@@ -91,34 +69,24 @@ const LHLPanel: FC<Iprops> = () => {
       })
     );
 
-    console.log(
-      "------messageListRef------: ",
-      messageListRef.current.scrollHeight
-    );
-
-    if (messageListRef.current) {
-      // messageListRef.current.scrollIntoView({ behavior: "smooth" });
-      messageListRef.current.scrollTo = messageListRef.current.scrollHeight;
-    }
-
-    return;
-
     // 2、更新消息
     setLoading(true);
     Request.chat({
       content,
       onUpdate: (message: string) => {
-        debounceUpdateMessage(message);
+        console.log("收到服务端流式数据");
+        onUpdateMessage(message);
       },
 
       onFinish: (message: string) => {
         setLoading(false);
-        // dispatch(
-        //   PanelActions.updateMesssageAction({
-        //     placement: "start",
-        //     content: message,
-        //   })
-        // );
+        dispatch(
+          PanelActions.updateMesssageAction({
+            placement: "start",
+            content: message,
+            isFinish: true,
+          })
+        );
       },
 
       // 记录stream，用于终止流式请求
@@ -151,7 +119,6 @@ const LHLPanel: FC<Iprops> = () => {
     <div className={styles["container"]}>
       <div className={styles["msg-con"]}>
         <Bubble.List
-          ref={messageListRef}
           roles={roles}
           autoScroll={true}
           style={{
@@ -179,7 +146,9 @@ const LHLPanel: FC<Iprops> = () => {
                   <MessageItem content={content} index={i} />
                 ),
                 typing:
-                  placement === "start" ? { step: 2, interval: 20 } : false,
+                  placement === "start"
+                    ? { step: Math.floor(content.length / 5), interval: 20 }
+                    : false,
                 footer:
                   placement === "start" && !loading ? (
                     <BubbleFotter

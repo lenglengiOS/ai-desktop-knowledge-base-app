@@ -51,6 +51,7 @@ export async function chat({
     for await (const chunk of stream) {
       let cur = chunk.choices[0]?.delta?.content || "";
       temp_result += cur;
+      // 更新流式数据
       onUpdate(temp_result);
 
       // 传输结束
@@ -60,6 +61,9 @@ export async function chat({
     }
   } catch (err) {
     onError("网络繁忙，请稍后再试");
-    throw err;
+    if (process.env.NODE_ENV === "development") {
+      // 在开发版本中执行的逻辑
+      throw err;
+    }
   }
 }

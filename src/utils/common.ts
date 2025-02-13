@@ -1,18 +1,21 @@
+//throttle.js
 /**
- * 时间戳版节流函数
- * @param func 要节流的函数
- * @param delay 节流的时间间隔（毫秒）
- * @returns 节流后的函数
+ * 节流函数
+ * @param {*} func 要执行的函数
+ * @param {*} wait 时间间隔
+ * @returns
  */
-export function throttleTimestamp<F extends (...args: any[]) => any>(
-  func: F,
-  delay: number
-): (...args: Parameters<F>) => void {
+export function throttle(
+  func: { apply: (arg0: any, arg1: any[]) => void },
+  wait: number
+) {
   let previous = 0;
-  return function (this: ThisParameterType<F>, ...args: Parameters<F>) {
-    const now = Date.now();
-    if (now - previous > delay) {
-      func.apply(this, args);
+  return function (a: any) {
+    let context = this,
+      args: any[] = [a];
+    let now = +new Date();
+    if (now - previous > wait) {
+      func.apply(context, args);
       previous = now;
     }
   };
