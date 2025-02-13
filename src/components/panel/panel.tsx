@@ -122,7 +122,6 @@ const LHLPanel: FC<Iprops> = () => {
           autoScroll={true}
           style={{
             textAlign: "left",
-            marginTop: 24,
           }}
           items={messages.map(
             ({ content, placement, createTime }: any, i: number) => {
