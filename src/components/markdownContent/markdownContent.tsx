@@ -1,20 +1,25 @@
 import { Tooltip, Button, message } from "antd/es";
-import React, { FC, useState } from "react";
+import React, { FC, useState, useRef, useEffect } from "react";
 import ReactMarkdown from "react-markdown";
 // @ts-ignore
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 // @ts-ignore
 import * as Theme from "react-syntax-highlighter/dist/esm/styles/prism";
-import remarkGfm from "remark-gfm";
 import { CopyOutlined, MoonOutlined, SunOutlined } from "@ant-design/icons";
 import copy from "copy-to-clipboard";
+import remarkGfm from "remark-gfm";
+import remarkMath from "remark-math";
+import rehypeKatex from "rehype-katex";
+import remarkToc from "remark-toc";
+import rehypeRaw from "rehype-raw";
+import mermaid from "remark-mermaidjs";
+import "katex/dist/katex.min.css"; // `rehype-katex` does not import the CSS for you
 
 interface Iprops {
   content: string;
 }
 const MarkdownContent: FC<Iprops> = ({ content }) => {
   const [isLight, setIsLignt] = useState<boolean>(true);
-
   const copyContent = (children: string) => {
     copy(children);
     message.success("已复制到粘贴板");
@@ -26,12 +31,15 @@ const MarkdownContent: FC<Iprops> = ({ content }) => {
 
   return (
     <ReactMarkdown
-      remarkPlugins={[remarkGfm]}
+      children={content}
+      remarkPlugins={[remarkMath, remarkGfm, remarkToc]}
+      rehypePlugins={[rehypeKatex, rehypeRaw]}
       components={{
         code(item: any) {
           const { children, className, inline } = item;
           // 匹配否指定语言
           const match: any = /language-(\w+)/.exec(className || "");
+          const language = match ? match[1] : "";
           return (
             <>
               {match ? (
@@ -49,9 +57,7 @@ const MarkdownContent: FC<Iprops> = ({ content }) => {
                       paddingRight: 16,
                     }}
                   >
-                    <div style={{ marginRight: "auto" }}>
-                      {match && match[1]}
-                    </div>
+                    <div style={{ marginRight: "auto" }}>{language}</div>
                     <Tooltip title="复制到粘贴板">
                       <Button
                         onClick={() => copyContent(children)}
@@ -80,6 +86,7 @@ const MarkdownContent: FC<Iprops> = ({ content }) => {
                       padding: 15,
                       border: "1px solid rgb(235,235,235)",
                       borderRadius: 0,
+                      fontSize: 13,
                     }}
                   >
                     {String(children).replace(/\n$/, "")}
@@ -102,9 +109,7 @@ const MarkdownContent: FC<Iprops> = ({ content }) => {
           );
         },
       }}
-    >
-      {content}
-    </ReactMarkdown>
+    />
   );
 };
 

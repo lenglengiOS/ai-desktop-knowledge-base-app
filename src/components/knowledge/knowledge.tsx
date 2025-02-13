@@ -33,6 +33,7 @@ import { useWindowSize } from "../../../src/hooks/commonHooks";
 import styles from "./knowledge.module.css";
 import { deleteKnowledgeAction } from "../../../src/store/actions/knowledgeAction";
 import { Welcome } from "@ant-design/x/es";
+import LHLEidtKnowledgeDetail from "../../../src/pages/editKnowledgeDetail/editKnowledgeDetail";
 
 interface Iprops {}
 
@@ -41,14 +42,23 @@ const LHLKnowledge: FC<Iprops> = () => {
     (state) => state.knowledge
   );
   const dispatch = useDispatch();
-  const [isDrawerOpen, setDrawerOpen] = useState(false);
+  // 详情抽屉
+  const [isSeeDetailDrawerOpen, setSeeDetailDrawerOpen] = useState(false);
+  // 编辑抽屉
+  const [isEditDetailDrawerOpen, setEidtDetailDrawerOpen] = useState(false);
   const { width: windowWidth } = useWindowSize();
   const [openItem, setOpenItem] = useState(null);
+
+  // 编辑
+  const editDetail = (item: knowledgeItemType) => {
+    setOpenItem(item);
+    setEidtDetailDrawerOpen(true);
+  };
 
   // 查看详情
   const seeDetail = (item: knowledgeItemType) => {
     setOpenItem(item);
-    setDrawerOpen(true);
+    setSeeDetailDrawerOpen(true);
   };
 
   // 删除知识点
@@ -60,7 +70,8 @@ const LHLKnowledge: FC<Iprops> = () => {
 
   // 抽屉关闭的回调
   const onDrawerClose = () => {
-    setDrawerOpen(false);
+    setSeeDetailDrawerOpen(false);
+    setEidtDetailDrawerOpen(false);
   };
 
   return (
@@ -83,7 +94,7 @@ const LHLKnowledge: FC<Iprops> = () => {
             <Card
               hoverable
               actions={[
-                <EditOutlined key="edit" />,
+                <EditOutlined key="edit" onClick={() => editDetail(item)} />,
                 <EyeOutlined key="see" onClick={() => seeDetail(item)} />,
                 <Popconfirm
                   title="提示"
@@ -106,14 +117,25 @@ const LHLKnowledge: FC<Iprops> = () => {
           ))}
         </Flex>
       </div>
+      {/* 查看详情 */}
       <Drawer
         destroyOnClose
         width={windowWidth - 200}
         title={openItem?.name || ""}
         onClose={onDrawerClose}
-        open={isDrawerOpen}
+        open={isSeeDetailDrawerOpen}
       >
         <KnowledgeDetail item={openItem} />
+      </Drawer>
+      {/* 编辑详情 */}
+      <Drawer
+        destroyOnClose
+        width={windowWidth - 200}
+        title={openItem?.name || ""}
+        onClose={onDrawerClose}
+        open={isEditDetailDrawerOpen}
+      >
+        <LHLEidtKnowledgeDetail item={openItem} />
       </Drawer>
     </div>
   );

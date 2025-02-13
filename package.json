@@ -59,6 +59,8 @@
     "@electron-forge/maker-dmg": "^7.6.1",
     "@types/markdown-it": "^14.1.2",
     "@types/node": "^22.13.0",
+    "@vavt/cm-extension": "^1.8.0",
+    "@vavt/rt-extension": "^3.0.0",
     "antd": "^5.23.3",
     "copy-to-clipboard": "^3.3.3",
     "dayjs": "^1.11.13",
@@ -68,6 +70,8 @@
     "markdown-it": "^14.1.0",
     "markdown-it-highlight": "^0.2.0",
     "markdown-it-highlightjs": "^4.2.0",
+    "md-editor-rt": "^5.2.2",
+    "mermaid": "^11.4.1",
     "openai": "^4.82.0",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
@@ -82,7 +86,14 @@
     "redux-logger": "^3.0.6",
     "redux-persist": "^6.0.0",
     "redux-thunk": "^3.1.0",
+    "rehype-katex": "^7.0.1",
+    "rehype-mermaid": "^3.0.0",
+    "rehype-raw": "^7.0.0",
     "remark-gfm": "^4.0.1",
+    "remark-math": "^6.0.0",
+    "remark-mermaid": "^0.2.0",
+    "remark-mermaidjs": "^7.0.0",
+    "remark-toc": "^9.0.0",
     "update-electron-app": "^3.1.1"
   }
 }
