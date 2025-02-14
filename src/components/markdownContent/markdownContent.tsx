@@ -14,6 +14,8 @@ import remarkToc from "remark-toc";
 import rehypeRaw from "rehype-raw";
 import mermaid from "remark-mermaidjs";
 import Mermaid from "./Mermaid";
+import { visit } from "unist-util-visit";
+import type { Root } from "mdast";
 import "katex/dist/katex.min.css"; // `rehype-katex` does not import the CSS for you
 
 interface Iprops {
@@ -33,14 +35,22 @@ const MarkdownContent: FC<Iprops> = ({ content }) => {
   return (
     <ReactMarkdown
       children={content}
-      remarkPlugins={[remarkMath, remarkGfm, remarkToc]}
+      remarkPlugins={[
+        () => (tree: Root) => {
+          visit(tree, "code", (node) => {
+            node.lang = node.lang ?? "plaintext";
+          });
+        },
+        remarkMath,
+        remarkGfm,
+        remarkToc,
+      ]}
       rehypePlugins={[rehypeKatex, rehypeRaw]}
       components={{
-        code(item: any) {
-          const { children, className, inline } = item;
+        code({ children, className }: any) {
           // 匹配否指定语言
           const match: any = /language-(\w+)/.exec(className || "");
-          const language = match ? match[1] : "";
+          const language = match ? match[1] : null;
           if (language === "mermaid") {
             return <Mermaid chart={children} />;
           }
