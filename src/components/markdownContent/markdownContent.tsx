@@ -12,7 +12,6 @@ import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
 import remarkToc from "remark-toc";
 import rehypeRaw from "rehype-raw";
-import mermaid from "remark-mermaidjs";
 import Mermaid from "./Mermaid";
 import { visit } from "unist-util-visit";
 import type { Root } from "mdast";
@@ -21,7 +20,9 @@ import "katex/dist/katex.min.css"; // `rehype-katex` does not import the CSS for
 interface Iprops {
   content: string;
 }
+
 const MarkdownContent: FC<Iprops> = ({ content }) => {
+  content = preprocessLaTeX(content);
   const [isLight, setIsLignt] = useState<boolean>(true);
   const copyContent = (children: string) => {
     copy(children);
@@ -110,10 +111,11 @@ const MarkdownContent: FC<Iprops> = ({ content }) => {
                 <code
                   className={className}
                   style={{
-                    backgroundColor: "#EEE",
+                    backgroundColor: "rgb(235,246,254)",
                     padding: "2px 6px",
                     borderRadius: "4px",
                     margin: "0 4px",
+                    color: "rgb(53,148,247)",
                   }}
                 >
                   {children}
@@ -128,3 +130,18 @@ const MarkdownContent: FC<Iprops> = ({ content }) => {
 };
 
 export default MarkdownContent;
+
+const preprocessLaTeX = (content: string) => {
+  // Replace block-level LaTeX delimiters \[ \] with $$ $$
+
+  const blockProcessedContent = content.replace(
+    /\\\[(.*?)\\\]/gs,
+    (_, equation) => `$$${equation}$$`
+  );
+  // Replace inline LaTeX delimiters \( \) with $ $
+  const inlineProcessedContent = blockProcessedContent.replace(
+    /\\\((.*?)\\\)/gs,
+    (_, equation) => `$${equation}$`
+  );
+  return inlineProcessedContent;
+};
