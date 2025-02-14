@@ -20,3 +20,12 @@ export const deleteKnowledgeAction: any = (index: number) => {
     });
   };
 };
+
+export const updateKnowledgeAction: any = (payload: any) => {
+  return (dispatch: Dispatch) => {
+    dispatch({
+      type: Types.UPDATE_KNOWLEDGE,
+      payload,
+    });
+  };
+};

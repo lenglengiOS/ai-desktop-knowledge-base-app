@@ -39,7 +39,7 @@ const AddKnowledgeModal: React.FC<IProps> = forwardRef((props, ref) => {
     },
   }));
 
-  const handleOk = (e: React.MouseEvent<HTMLElement>) => {
+  const handleOk = () => {
     let { content } = props;
     setOpen(false);
     messageApi.open({
@@ -122,6 +122,7 @@ const AddKnowledgeModal: React.FC<IProps> = forwardRef((props, ref) => {
           value={name}
           ref={inputRef}
           onChange={(e: any) => setName(e.target.value)}
+          onPressEnter={() => name && handleOk()}
         />
       </Modal>
     </>

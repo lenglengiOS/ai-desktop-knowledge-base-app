@@ -7,7 +7,7 @@ interface Iprops {
 }
 
 const LHLKnowledgeDetail: FC<Iprops> = ({ item }) => {
-  return <LHLMarkdownContent content={item.content} />;
+  return <LHLMarkdownContent content={item?.content || ""} />;
 };
 
 export default LHLKnowledgeDetail;

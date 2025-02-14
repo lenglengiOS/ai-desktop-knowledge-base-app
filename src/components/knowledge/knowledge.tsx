@@ -42,17 +42,21 @@ const LHLKnowledge: FC<Iprops> = () => {
     (state) => state.knowledge
   );
   const dispatch = useDispatch();
+  const { width: windowWidth } = useWindowSize();
   // 详情抽屉
   const [isSeeDetailDrawerOpen, setSeeDetailDrawerOpen] = useState(false);
   // 编辑抽屉
   const [isEditDetailDrawerOpen, setEidtDetailDrawerOpen] = useState(false);
-  const { width: windowWidth } = useWindowSize();
+  // 选择的知识点下标
+  const [selIndex, setSelIndex] = useState<number>(null);
+
   const [openItem, setOpenItem] = useState(null);
 
   // 编辑
-  const editDetail = (item: knowledgeItemType) => {
+  const editDetail = (item: knowledgeItemType, index: number) => {
     setOpenItem(item);
     setEidtDetailDrawerOpen(true);
+    setSelIndex(index);
   };
 
   // 查看详情
@@ -72,6 +76,7 @@ const LHLKnowledge: FC<Iprops> = () => {
   const onDrawerClose = () => {
     setSeeDetailDrawerOpen(false);
     setEidtDetailDrawerOpen(false);
+    setOpenItem(null);
   };
 
   return (
@@ -94,7 +99,10 @@ const LHLKnowledge: FC<Iprops> = () => {
             <Card
               hoverable
               actions={[
-                <EditOutlined key="edit" onClick={() => editDetail(item)} />,
+                <EditOutlined
+                  key="edit"
+                  onClick={() => editDetail(item, index)}
+                />,
                 <EyeOutlined key="see" onClick={() => seeDetail(item)} />,
                 <Popconfirm
                   title="提示"
@@ -108,7 +116,7 @@ const LHLKnowledge: FC<Iprops> = () => {
               ]}
               style={{ width: 261 }}
               key={index.toString()}
-              title={item.name}
+              title={item.name || "【暂无标题】"}
               bordered={false}
             >
               <div className={styles["content"]}>{item.content}</div>
@@ -119,6 +127,7 @@ const LHLKnowledge: FC<Iprops> = () => {
       </div>
       {/* 查看详情 */}
       <Drawer
+        keyboard={false}
         destroyOnClose
         width={windowWidth - 200}
         title={openItem?.name || ""}
@@ -128,15 +137,12 @@ const LHLKnowledge: FC<Iprops> = () => {
         <KnowledgeDetail item={openItem} />
       </Drawer>
       {/* 编辑详情 */}
-      <Drawer
-        destroyOnClose
-        width={windowWidth - 200}
-        title={openItem?.name || ""}
-        onClose={onDrawerClose}
-        open={isEditDetailDrawerOpen}
-      >
-        <LHLEidtKnowledgeDetail item={openItem} />
-      </Drawer>
+      <LHLEidtKnowledgeDetail
+        index={selIndex}
+        item={openItem}
+        isEditDetailDrawerOpen={isEditDetailDrawerOpen}
+        onDrawerClose={onDrawerClose}
+      />
     </div>
   );
 };

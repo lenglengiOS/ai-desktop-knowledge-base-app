@@ -39,12 +39,18 @@ const knowledgeReducer = (state = initState, action: ActionType) => {
       knowledgeList.unshift(item);
       return { ...state, knowledgeList };
 
-    // 修改知识库
+    // 删除指定下标的元素
     case Types.DELETE_KNOWLEDGE:
-      let { index } = payload;
-      knowledgeList.splice(index, 1); // 删除指定下标的元素
-      return { ...state, messages: knowledgeList };
+      knowledgeList.splice(payload.index, 1);
+      return { ...state, knowledgeList };
 
+    // 删除指定下标的元素
+    case Types.UPDATE_KNOWLEDGE:
+      knowledgeList[payload.index] = payload.knowledge;
+      return {
+        ...state,
+        knowledgeList,
+      };
     default:
       return state;
   }
