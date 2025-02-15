@@ -1,11 +1,51 @@
 import React, { FC, useEffect, useState } from "react";
 import { knowledgeItemType } from "../../store/reducers/knowledgeReducer";
-import { MdEditor } from "md-editor-rt";
+import { MdEditor, ToolbarNames } from "md-editor-rt";
 import "md-editor-rt/lib/style.css";
 import { Drawer, Input, message } from "antd/es";
 import { useWindowSize } from "../../../src/hooks/commonHooks";
 import { useDispatch } from "react-redux/es";
 import { updateKnowledgeAction } from "../../../src/store/actions/knowledgeAction";
+import { ExportPDF } from "@vavt/rt-extension";
+// All CSS for this extension library
+// import '@vavt/rt-extension/lib/asset/style.css';
+// Or individual style for Emoji
+import "@vavt/rt-extension/lib/asset/ExportPDF.css";
+
+const toolbars: Array<ToolbarNames> = [
+  "bold",
+  "underline",
+  "italic",
+  "-",
+  "strikeThrough",
+  "sub",
+  "sup",
+  "quote",
+  "unorderedList",
+  "orderedList",
+  "task",
+  "-",
+  "codeRow",
+  "code",
+  "link",
+  "image",
+  "table",
+  "mermaid",
+  "katex",
+  "-",
+  "revoke",
+  "next",
+  "save",
+  0,
+  "=",
+  "pageFullscreen",
+  "fullscreen",
+  "preview",
+  "previewOnly",
+  "htmlPreview",
+  "catalog",
+  "github",
+];
 
 interface Iprops {
   item?: knowledgeItemType;
@@ -79,7 +119,6 @@ const LHLEidtKnowledgeDetail: FC<Iprops> = ({
       <MdEditor
         autoFocus
         onError={onError}
-        toolbarsExclude={["github"]}
         showToolbarName={true}
         onSave={onSave}
         noUploadImg={true}
@@ -87,6 +126,10 @@ const LHLEidtKnowledgeDetail: FC<Iprops> = ({
         style={{ height: "100%" }}
         value={text}
         onChange={setText}
+        toolbars={toolbars}
+        defToolbars={[
+          <ExportPDF key="ExportPDF" value={text} fileName={name} />,
+        ]}
       />
     </Drawer>
   );
