@@ -132,9 +132,7 @@ const LHLPanel: FC<Iprops> = () => {
                   content: {
                     backgroundColor:
                       placement === "start" ? "rgb(250,250,248)" : "#EFEFEF", // 设置气泡内容区域的背景色
-                    padding: placement === "start" ? "10px" : 0, // 设置气泡内容区域的内边距
-                    paddingLeft: "10px",
-                    paddingRight: "10px",
+                    padding: 0, // 设置气泡内容区域的内边距
                   },
                 },
                 content,

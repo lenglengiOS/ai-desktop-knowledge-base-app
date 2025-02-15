@@ -73,6 +73,7 @@ const LHLEidtKnowledgeDetail: FC<Iprops> = ({
       open={isEditDetailDrawerOpen}
     >
       <MdEditor
+        autoFocus
         toolbarsExclude={["github"]}
         showToolbarName={true}
         onSave={onSave}

@@ -10,9 +10,10 @@ import copy from "copy-to-clipboard";
 import remarkGfm from "remark-gfm";
 import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
+import { MdPreview } from "md-editor-rt";
 import remarkToc from "remark-toc";
 import rehypeRaw from "rehype-raw";
-import Mermaid from "./Mermaid";
+import Mermaid from "./mermaid";
 import { visit } from "unist-util-visit";
 import type { Root } from "mdast";
 import "katex/dist/katex.min.css"; // `rehype-katex` does not import the CSS for you
@@ -21,6 +22,16 @@ interface Iprops {
   content: string;
 }
 
+// 富文本预览组件，目前在使用
+const MDContent: FC<Iprops> = ({ content }) => {
+  return (
+    <MdPreview style={{ backgroundColor: "transparent" }} value={content} />
+  );
+};
+
+export default MDContent;
+
+// 自定义组件，暂时没有用
 const MarkdownContent: FC<Iprops> = ({ content }) => {
   content = preprocessLaTeX(content);
   const [isLight, setIsLignt] = useState<boolean>(true);
@@ -46,6 +57,7 @@ const MarkdownContent: FC<Iprops> = ({ content }) => {
         remarkGfm,
         remarkToc,
       ]}
+      remarkRehypeOptions={{ passThrough: ["link"] }}
       rehypePlugins={[rehypeKatex, rehypeRaw]}
       components={{
         code({ children, className }: any) {
@@ -128,8 +140,6 @@ const MarkdownContent: FC<Iprops> = ({ content }) => {
     />
   );
 };
-
-export default MarkdownContent;
 
 const preprocessLaTeX = (content: string) => {
   // Replace block-level LaTeX delimiters \[ \] with $$ $$
