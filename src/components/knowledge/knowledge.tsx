@@ -11,6 +11,7 @@ import {
   message,
   Button,
   Space,
+  Tooltip,
 } from "antd";
 import {
   EditOutlined,
@@ -99,20 +100,26 @@ const LHLKnowledge: FC<Iprops> = () => {
             <Card
               hoverable
               actions={[
-                <EditOutlined
-                  key="edit"
-                  onClick={() => editDetail(item, index)}
-                />,
-                <EyeOutlined key="see" onClick={() => seeDetail(item)} />,
-                <Popconfirm
-                  title="提示"
-                  description="确定要删除这个知识点吗？"
-                  onConfirm={() => deleteKnowledge(index)}
-                  okText="确定"
-                  cancelText="取消"
-                >
-                  <DeleteOutlined key="delete" />
-                </Popconfirm>,
+                <Tooltip title="编辑">
+                  <EditOutlined
+                    key="edit"
+                    onClick={() => editDetail(item, index)}
+                  />
+                </Tooltip>,
+                <Tooltip title="查看">
+                  <EyeOutlined key="see" onClick={() => seeDetail(item)} />
+                </Tooltip>,
+                <Tooltip title="删除">
+                  <Popconfirm
+                    title="提示"
+                    description="确定要删除这个知识点吗？"
+                    onConfirm={() => deleteKnowledge(index)}
+                    okText="确定"
+                    cancelText="取消"
+                  >
+                    <DeleteOutlined key="delete" />
+                  </Popconfirm>
+                </Tooltip>,
               ]}
               style={{ width: 261 }}
               key={index.toString()}

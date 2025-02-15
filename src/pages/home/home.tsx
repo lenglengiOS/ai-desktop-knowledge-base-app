@@ -27,7 +27,7 @@ function getItem(
 
 const items: MenuItem[] = [
   getItem("工作面板", "1", <PieChartOutlined />),
-  getItem("我的草稿", "2", <DesktopOutlined />),
+  // getItem("我的草稿", "2", <DesktopOutlined />),
   getItem("知识库", "3", <FileOutlined />),
 ];
 
@@ -61,7 +61,7 @@ const Home: React.FC = () => {
       <Layout style={{ backgroundColor: "#FFF", height: "100vh" }}>
         <Content>
           {key === "1" && <LHLPanel />}
-          {key === "2" && <LHLDraft />}
+          {/* {key === "2" && <LHLDraft />} */}
           {key === "3" && <LHLKnowledge />}
         </Content>
       </Layout>

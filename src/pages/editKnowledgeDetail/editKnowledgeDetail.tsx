@@ -27,7 +27,6 @@ const toolbars: Array<ToolbarNames> = [
   "-",
   "codeRow",
   "code",
-  "link",
   "image",
   "table",
   "mermaid",
@@ -38,13 +37,10 @@ const toolbars: Array<ToolbarNames> = [
   "save",
   0,
   "=",
-  "pageFullscreen",
   "fullscreen",
   "preview",
-  "previewOnly",
   "htmlPreview",
   "catalog",
-  "github",
 ];
 
 interface Iprops {
