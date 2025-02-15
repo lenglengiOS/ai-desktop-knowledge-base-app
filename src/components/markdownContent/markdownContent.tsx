@@ -25,7 +25,12 @@ interface Iprops {
 // 富文本预览组件，目前在使用
 const MDContent: FC<Iprops> = ({ content }) => {
   return (
-    <MdPreview style={{ backgroundColor: "transparent" }} value={content} />
+    <MdPreview
+      style={{ backgroundColor: "transparent" }}
+      value={content}
+      codeFoldable={false}
+      showCodeRowNumber={false}
+    />
   );
 };
 
