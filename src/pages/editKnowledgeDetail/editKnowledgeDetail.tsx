@@ -61,6 +61,10 @@ const LHLEidtKnowledgeDetail: FC<Iprops> = ({
     onDrawerClose && onDrawerClose();
   };
 
+  const onError = (err: any) => {
+    message.error(err.message);
+  };
+
   return (
     <Drawer
       keyboard={false}
@@ -74,6 +78,7 @@ const LHLEidtKnowledgeDetail: FC<Iprops> = ({
     >
       <MdEditor
         autoFocus
+        onError={onError}
         toolbarsExclude={["github"]}
         showToolbarName={true}
         onSave={onSave}
