@@ -144,7 +144,7 @@ const LHLPanel: FC<Iprops> = () => {
                 ),
                 typing:
                   placement === "start"
-                    ? { step: Math.floor(content.length / 8), interval: 20 }
+                    ? { step: Math.floor(content.length / 8), interval: 40 }
                     : false,
                 footer: placement === "start" && (
                   <BubbleFotter content={content} index={i} loading={loading} />
