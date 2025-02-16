@@ -37,7 +37,6 @@ const toolbars: Array<ToolbarNames> = [
   "save",
   0,
   "=",
-  "fullscreen",
   "preview",
   "htmlPreview",
   "catalog",
