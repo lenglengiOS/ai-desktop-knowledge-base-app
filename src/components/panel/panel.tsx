@@ -1,4 +1,4 @@
-import React, { useState, FC } from "react";
+import React, { useState, FC, useRef, useEffect, SyntheticEvent } from "react";
 import { Bubble, Welcome } from "@ant-design/x";
 import { Footer } from "antd/es/layout/layout";
 import LHLSender from "../sender/sender";
@@ -14,41 +14,43 @@ import styles from "./panel.module.css";
 import BubbleFotter from "./bubbleFotter";
 
 let stream: any;
-const roles: GetProp<typeof Bubble.List, "roles"> = {
-  ai: {
-    placement: "start",
-    typing: { step: 5, interval: 20 },
-  },
-  user: {
-    placement: "end",
-  },
-};
-
 interface Iprops {}
+
+let canAutoScrollToBottom = true;
 const LHLPanel: FC<Iprops> = () => {
   const [loading, setLoading] = useState<boolean>(false);
+  const chatListRef = useRef(null);
+  const isProgrammaticScroll = useRef(false);
 
   const dispatch = useDispatch();
   const { messages }: PanelStateType = useSelector<ReducersType>(
     (state) => state.panel
   );
 
+  useEffect(() => {
+    scrollToBottom();
+  }, []);
+
   const onUpdateMessage = throttle((message: string) => {
+    // console.log("刷新", Date.now());
     dispatch(
       PanelActions.updateMesssageAction({
         placement: "start",
         content: message,
       })
     );
-  }, 500);
+    scrollToBottom("smooth");
+  }, 100);
 
-  const onSubmit = (content: string) => {
+  const onSubmit = async (content: string) => {
+    canAutoScrollToBottom = true;
     // 第一步，把用户输入的消息存入Store
     let msg = {
       placement: "end",
       content,
     };
     dispatch(PanelActions.addMesssageAction(msg));
+    await delay(50); // 延迟50毫秒，避免两次添加的时间重叠
 
     // 第二步，把ai返回的数据存入Store（此处延时2秒，等待页面更新）
     // 1、申请一个消息占位
@@ -58,6 +60,11 @@ const LHLPanel: FC<Iprops> = () => {
         content: "",
       })
     );
+
+    const timer = setTimeout(() => {
+      clearTimeout(timer);
+      scrollToBottom("smooth");
+    });
 
     // 2、更新消息
     setLoading(true);
@@ -76,6 +83,10 @@ const LHLPanel: FC<Iprops> = () => {
             isFinish: true,
           })
         );
+        const timer = setTimeout(() => {
+          clearTimeout(timer);
+          scrollToBottom("smooth");
+        }, 100);
       },
 
       // 记录stream，用于终止流式请求
@@ -91,6 +102,7 @@ const LHLPanel: FC<Iprops> = () => {
           PanelActions.updateMesssageAction({
             placement: "start",
             content: "网络繁忙，请稍后再试",
+            isFinish: true,
           })
         );
       },
@@ -100,13 +112,45 @@ const LHLPanel: FC<Iprops> = () => {
   const onCancel = async () => {
     setLoading(false);
     // 终止请求
-    console.log("终止请求: ", stream);
+    // console.log("终止请求: ", stream);
     stream.controller.abort();
+  };
+
+  // 滚动到底部方法
+  const scrollToBottom = (behavior = "auto") => {
+    if (!canAutoScrollToBottom) return;
+    // console.log("scrollToBottom- ");
+    const current = chatListRef?.current!;
+    //scrollHeight是页面的高度
+    if (current) {
+      current.scrollTop = current.scrollHeight;
+      current?.scrollIntoView({ behavior });
+      isProgrammaticScroll.current = true; // 设置标志
+    }
+  };
+
+  // 监听列表滚动
+  const onMessageListScroll = (e: SyntheticEvent) => {
+    if (!chatListRef?.current) return;
+    const { scrollTop, scrollHeight, clientHeight } = chatListRef.current;
+    const isNearBottom = scrollHeight - (scrollTop + clientHeight) < 50;
+
+    if (isProgrammaticScroll.current) {
+      // console.log("代码触发的滚动");
+      isProgrammaticScroll.current = false; // 重置标志
+    } else {
+      // console.log("用户触发的滚动");
+      canAutoScrollToBottom = isNearBottom;
+    }
   };
 
   return (
     <div className={styles["container"]}>
-      <div className={styles["msg-con"]}>
+      <div
+        className={styles["msg-con"]}
+        ref={chatListRef}
+        onScroll={onMessageListScroll}
+      >
         {messages.length === 0 && (
           <div className={styles["empty"]}>
             <Welcome
@@ -117,43 +161,46 @@ const LHLPanel: FC<Iprops> = () => {
             />
           </div>
         )}
-        <Bubble.List
-          roles={roles}
-          autoScroll={true}
-          style={{
-            textAlign: "left",
-            paddingRight: 24,
-          }}
-          items={messages.map(
-            ({ content, placement, createTime }: any, i: number) => {
-              return {
-                key: createTime,
-                styles: {
-                  content: {
-                    backgroundColor:
-                      placement === "start" ? "rgb(250,250,248)" : "#EFEFEF", // 设置气泡内容区域的背景色
-                    padding: 0, // 设置气泡内容区域的内边距
-                  },
+        {messages.map(
+          ({ content, placement, createTime, isFinish }: any, i: number) => (
+            <Bubble
+              key={createTime}
+              style={{
+                textAlign: "left",
+                paddingRight: 24,
+              }}
+              styles={{
+                content: {
+                  backgroundColor:
+                    placement === "start" ? "rgb(250,250,248)" : "#EFEFEF", // 设置气泡内容区域的背景色
+                  padding: 0,
+                  marginBottom: 24,
                 },
-                content,
-                role: placement === "start" ? "ai" : "user",
-                loading: placement === "start" && content === "",
-                // messageRender: (content) => renderMarkdown(content),
-                messageRender: (content) => (
-                  <MessageItem content={content} index={i} />
-                ),
-                typing:
-                  placement === "start"
-                    ? { step: Math.floor(content.length / 8), interval: 40 }
-                    : false,
-                footer: placement === "start" && (
+              }}
+              // onTypingComplete={() =>
+              //   i === messages.length - 1 && scrollToBottom("onTypingComplete")
+              // }
+              content={content}
+              placement={placement}
+              loading={placement === "start" && content === ""}
+              messageRender={(content) => (
+                <MessageItem content={content} index={i} />
+              )}
+              typing={
+                placement === "start" && i === messages.length - 1 && !isFinish
+                  ? { step: 2, interval: 50 }
+                  : // ? { step: Math.floor(content.length / 8), interval: 40 }
+                    false
+              }
+              footer={
+                placement === "start" && (
                   <BubbleFotter content={content} index={i} loading={loading} />
-                ),
-                variant: placement === "start" ? "filled" : "shadow",
-              };
-            }
-          )}
-        />
+                )
+              }
+              variant={placement === "start" ? "filled" : "shadow"}
+            />
+          )
+        )}
       </div>
       <Footer
         style={{

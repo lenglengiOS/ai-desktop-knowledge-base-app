@@ -5,6 +5,7 @@ type ActionType = { payload: any; type: String };
 export type MessageItemType = {
   placement: "end" | "start";
   content: string;
+  isFinish?: boolean;
 };
 
 export type PanelStateType = {
@@ -28,11 +29,12 @@ const panelReducer = (state = initState, action: ActionType) => {
 
     // 更新消息
     case Types.UPDATE_MESSAGE:
-      let { isFinish, content } = payload;
+      let { isFinish = false, content } = payload;
       // 如果isFinish=true,则截取最近50条数据
       let tempMessages = isFinish ? state.messages.slice(-50) : state.messages;
       let length = tempMessages.length;
       tempMessages[length - 1].content = content;
+      tempMessages[length - 1].isFinish = isFinish;
       return { ...state, messages: tempMessages };
 
     default:
