@@ -1,13 +1,8 @@
 import OpenAI from "openai";
-/**
- * moonshot
- */
-const client = new OpenAI({
-  apiKey: "sk-cG6yn2hUq8rNDwPQ2X6o9t4xSMEWh5jHsRaMnQ5djjZpotEw",
-  baseURL: "https://api.moonshot.cn/v1",
-  dangerouslyAllowBrowser: true,
-});
-
+import { SettingStateType } from "../store/reducers/settingReducer";
+import store from "../store";
+import { useSelector } from "react-redux";
+import { ReducersType } from "../store/reducers";
 /**
  * deepseek
  */
@@ -18,11 +13,11 @@ const client = new OpenAI({
 // });
 
 type ChatType = {
-  content: string; // 输入的查询内容
-  onUpdate: (message: string) => void;
-  onFinish: (message: string) => void;
-  getStream: (stream: any) => void;
-  onError: (err: string) => void;
+  content?: string; // 输入的查询内容
+  onUpdate?: (message: string) => void;
+  onFinish?: (message: string) => void;
+  getStream?: (stream: any) => void;
+  onError?: (err: string) => void;
 };
 
 // AI聊天
@@ -33,10 +28,20 @@ export async function chat({
   getStream,
   onError,
 }: ChatType) {
+  const {
+    setting: { apiKey, baseURL, model, name },
+  }: ReducersType = store.getState();
+  console.log("setting", { apiKey, baseURL, model, name });
+
   let stream;
+  const client = new OpenAI({
+    apiKey,
+    baseURL,
+    dangerouslyAllowBrowser: true,
+  });
   try {
     stream = await client.chat.completions.create({
-      model: "moonshot-v1-auto",
+      model,
       // model: "deepseek-chat",
       // if chat context is needed, modify the array
       messages: [{ role: "user", content }],
@@ -65,5 +70,30 @@ export async function chat({
       // 在开发版本中执行的逻辑
       throw err;
     }
+  }
+}
+
+type ConfigType = {
+  config: { apiKey: string; baseURL: string; model: string };
+};
+// 测试链接
+export async function testConnect({
+  onFinish,
+  onError,
+  config,
+}: ChatType & ConfigType) {
+  const client = new OpenAI({
+    apiKey: config.apiKey,
+    baseURL: config.baseURL,
+    dangerouslyAllowBrowser: true,
+  });
+  try {
+    await client.chat.completions.create({
+      model: config.model,
+      messages: [{ role: "user", content: String(Date.now()) }],
+    });
+    onFinish("配置测试成功！");
+  } catch (err) {
+    onError("配置测试失败，请核对参数！");
   }
 }

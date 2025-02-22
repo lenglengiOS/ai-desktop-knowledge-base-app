@@ -1,13 +1,13 @@
 import React, { useState, FC, useRef, useEffect, SyntheticEvent } from "react";
 import { Bubble, Welcome } from "@ant-design/x";
 import { Footer } from "antd/es/layout/layout";
-import LHLSender from "../sender/sender";
+import { LHLSender } from "../../components";
 import * as Request from "../../api/request";
 import * as PanelActions from "../../store/actions/panelAction";
 import { useDispatch, useSelector } from "react-redux";
 import { ReducersType } from "../../store/reducers";
 import { PanelStateType } from "../../store/reducers/panelReducer";
-import { GetProp, message } from "antd/es";
+import { message } from "antd/es";
 import { throttle, delay } from "../../utils/common";
 import MessageItem from "./messageItem";
 import styles from "./panel.module.css";

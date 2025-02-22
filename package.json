@@ -1,7 +1,7 @@
 {
   "name": "ai-desktop-knowledge-base-app",
   "productName": "海豚AI助手",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "My Electron application description",
   "main": ".webpack/main",
   "repository": {

@@ -8,7 +8,7 @@ import { Modal, Input, message } from "antd";
 import type { DraggableData, DraggableEvent } from "react-draggable";
 import Draggable from "react-draggable";
 import * as KnowledgeActions from "../../store/actions/knowledgeAction";
-import { useDispatch } from "react-redux/es";
+import { useDispatch } from "react-redux";
 
 interface IProps {
   ref?: any;

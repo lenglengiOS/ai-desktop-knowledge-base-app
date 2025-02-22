@@ -1,11 +1,11 @@
 import React, { FC, useEffect, useState } from "react";
-import { knowledgeItemType } from "../../store/reducers/knowledgeReducer";
+import { knowledgeItemType } from "../../../store/reducers/knowledgeReducer";
 import { MdEditor, ToolbarNames } from "md-editor-rt";
 import "md-editor-rt/lib/style.css";
 import { Drawer, Input, message } from "antd/es";
-import { useWindowSize } from "../../../src/hooks/commonHooks";
+import { useWindowSize } from "../../../../src/hooks/commonHooks";
 import { useDispatch } from "react-redux/es";
-import { updateKnowledgeAction } from "../../../src/store/actions/knowledgeAction";
+import { updateKnowledgeAction } from "../../../../src/store/actions/knowledgeAction";
 import { ExportPDF } from "@vavt/rt-extension";
 // All CSS for this extension library
 // import '@vavt/rt-extension/lib/asset/style.css';

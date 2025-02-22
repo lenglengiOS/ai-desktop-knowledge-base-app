@@ -1,0 +1,7 @@
+{
+  "name": "",
+  "apiKey": "sk-cG6yn2hUq8rNDwPQ2X6o9t4xSMEWh5jHsRaMnQ5djjZpotEw",
+  "baseURL": "https://api.moonshot.cn/v1",
+  "model": "moonshot-v1-auto",
+  "dangerouslyAllowBrowser": true
+}

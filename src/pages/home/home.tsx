@@ -3,11 +3,12 @@ import {
   DesktopOutlined,
   FileOutlined,
   PieChartOutlined,
+  SettingOutlined,
 } from "@ant-design/icons";
 import type { MenuProps } from "antd";
-import { Layout, Menu, theme } from "antd";
-const { Content, Footer, Sider } = Layout;
-import { LHLPanel, LHLDraft, LHLKnowledge } from "../../components/index";
+import { Layout, Menu } from "antd";
+const { Content, Sider } = Layout;
+import { LHLPanel, LHLDraft, LHLKnowledge, LHLSetting } from "../../pages";
 
 type MenuItem = Required<MenuProps>["items"][number];
 
@@ -29,14 +30,12 @@ const items: MenuItem[] = [
   getItem("工作面板", "1", <PieChartOutlined />),
   // getItem("我的草稿", "2", <DesktopOutlined />),
   getItem("知识库", "3", <FileOutlined />),
+  getItem("系统设置", "4", <SettingOutlined />),
 ];
 
 const Home: React.FC = () => {
   const [collapsed, setCollapsed] = useState(false);
   const [key, setKey] = useState("1");
-  const {
-    token: { colorBgContainer, borderRadiusLG },
-  } = theme.useToken();
 
   const onSelect = (item: { key: React.SetStateAction<string> }) => {
     setKey(item.key);
@@ -63,6 +62,7 @@ const Home: React.FC = () => {
           {key === "1" && <LHLPanel />}
           {/* {key === "2" && <LHLDraft />} */}
           {key === "3" && <LHLKnowledge />}
+          {key === "4" && <LHLSetting />}
         </Content>
       </Layout>
     </Layout>

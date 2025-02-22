@@ -1,5 +1,5 @@
 import React, { FC, forwardRef } from "react";
-import { LHLMarkdownContent } from "..";
+import { LHLMarkdownContent } from "../../components";
 
 interface Iprops {
   content: string;

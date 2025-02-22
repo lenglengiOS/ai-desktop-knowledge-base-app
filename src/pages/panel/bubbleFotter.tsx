@@ -18,6 +18,7 @@ const BubbleFotter: FC<IProps> = React.memo(
       copy(content);
       message.success("已复制到粘贴板");
     };
+
     const add = () => {
       if (addModalRef.current) {
         addModalRef.current.showModal();

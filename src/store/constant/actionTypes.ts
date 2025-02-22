@@ -10,3 +10,6 @@ export const UPDATE_MESSAGE = "panel/UPDATE_MESSAGE";
 export const ADD_KNOWLEDGE = "knowledge/ADD_KNOWLEDGE";
 export const DELETE_KNOWLEDGE = "knowledge/DELETE_KNOWLEDGE";
 export const UPDATE_KNOWLEDGE = "knowledge/UPDATE_KNOWLEDGE";
+
+// setting
+export const UPDATE_SETTING = "setting/UPDATE_SETTING";

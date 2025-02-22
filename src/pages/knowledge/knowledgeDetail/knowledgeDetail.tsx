@@ -1,6 +1,6 @@
 import React, { FC } from "react";
-import { knowledgeItemType } from "../../store/reducers/knowledgeReducer";
-import { LHLMarkdownContent } from "../../components/index";
+import { knowledgeItemType } from "../../../store/reducers/knowledgeReducer";
+import { LHLMarkdownContent } from "../../../components/index";
 
 interface Iprops {
   item?: knowledgeItemType;

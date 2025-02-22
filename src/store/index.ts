@@ -14,7 +14,7 @@ const persistConfig = getPersistConfig({
   storage: localStorage, // 缓存机制
   // @ts-ignore
   stateReconciler: autoMergeLevel2, // 查看 'Merge Process' 部分的具体情况
-  whitelist: ["panel.messages", "knowledge"],
+  whitelist: ["panel.messages", "knowledge", "setting"],
   rootReducer,
 });
 

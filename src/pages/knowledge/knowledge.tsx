@@ -29,12 +29,12 @@ import {
 } from "../../../src/store/reducers/knowledgeReducer";
 import Meta from "antd/es/card/Meta";
 import { useNavigate } from "react-router-dom";
-import KnowledgeDetail from "../../pages/knowledgeDetail/knowledgeDetail";
+import KnowledgeDetail from "./knowledgeDetail/knowledgeDetail";
 import { useWindowSize } from "../../../src/hooks/commonHooks";
 import styles from "./knowledge.module.css";
 import { deleteKnowledgeAction } from "../../../src/store/actions/knowledgeAction";
 import { Welcome } from "@ant-design/x/es";
-import LHLEidtKnowledgeDetail from "../../../src/pages/editKnowledgeDetail/editKnowledgeDetail";
+import LHLEidtKnowledgeDetail from "./editKnowledgeDetail/editKnowledgeDetail";
 
 interface Iprops {}
 

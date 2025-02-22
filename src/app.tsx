@@ -1,15 +1,18 @@
 import React, { useEffect } from "react";
 import { createRoot } from "react-dom/client";
 import { HashRouter, Routes, Route, Link } from "react-router-dom";
-import { Provider } from "react-redux";
+import { Provider, useSelector } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import store, { persistor } from "./store/index";
+import { LHLSetting } from "./pages";
 import Package from "../package.json";
+import { SettingStateType } from "./store/reducers/settingReducer";
 import "./app.css";
 
 // 路由
 import Home from "./pages/home/home";
-import KnowledgeDetail from "./pages/knowledgeDetail/knowledgeDetail";
+import KnowledgeDetail from "./pages/knowledge/knowledgeDetail/knowledgeDetail";
+import { ReducersType } from "./store/reducers";
 
 const App = () => {
   useEffect(() => {
@@ -18,15 +21,27 @@ const App = () => {
     a.innerHTML = `海豚AI助手（版本号：${Package.version}）`;
   }, []);
 
+  const Page = () => {
+    const { name, apiKey, baseURL, model }: SettingStateType =
+      useSelector<ReducersType>((state) => state.setting);
+
+    if (!apiKey || !baseURL || !model || !name) {
+      return <LHLSetting />;
+    }
+    return (
+      <HashRouter>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/knowledgeDetail" element={<KnowledgeDetail />} />
+        </Routes>
+      </HashRouter>
+    );
+  };
+
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
-        <HashRouter>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/knowledgeDetail" element={<KnowledgeDetail />} />
-          </Routes>
-        </HashRouter>
+        <Page />
       </PersistGate>
     </Provider>
   );
