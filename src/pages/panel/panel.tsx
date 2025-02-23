@@ -174,7 +174,9 @@ const LHLPanel: FC<Iprops> = () => {
                   backgroundColor:
                     placement === "start" ? "rgb(250,250,248)" : "#EFEFEF", // 设置气泡内容区域的背景色
                   padding: 0,
-                  marginBottom: 24,
+                  marginTop: placement === "start" ? 0 : 24,
+                  marginBottom: placement === "start" ? 0 : 24,
+                  maxWidth: 800,
                 },
               }}
               // onTypingComplete={() =>
@@ -184,7 +186,11 @@ const LHLPanel: FC<Iprops> = () => {
               placement={placement}
               loading={placement === "start" && content === ""}
               messageRender={(content) => (
-                <MessageItem content={content} index={i} />
+                <MessageItem
+                  content={content}
+                  index={i}
+                  placement={placement}
+                />
               )}
               typing={
                 placement === "start" && i === messages.length - 1 && !isFinish
