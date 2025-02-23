@@ -66,7 +66,7 @@ const LHLSetting: FC<Iprops> = ({}) => {
           name="apiKey"
           rules={[{ required: true, message: "请输入apiKey" }]}
         >
-          <Input />
+          <Input.Password />
         </Form.Item>
         <Form.Item<FieldType>
           label="baseURL"
