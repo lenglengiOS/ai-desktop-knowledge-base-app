@@ -62,6 +62,7 @@
     "@vavt/cm-extension": "^1.8.0",
     "@vavt/rt-extension": "^3.0.0",
     "antd": "^5.23.3",
+    "antd-style": "^3.7.1",
     "copy-to-clipboard": "^3.3.3",
     "dayjs": "^1.11.13",
     "electron-is-dev": "^2.0.0",
