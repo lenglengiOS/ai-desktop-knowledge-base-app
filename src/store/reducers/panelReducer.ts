@@ -1,6 +1,6 @@
 import * as Types from "../constant/actionTypes";
 
-type ActionType = { payload: any; type: String };
+type ActionType = { payload?: any; type: String };
 
 export type MessageItemType = {
   placement: "end" | "start";
@@ -9,11 +9,18 @@ export type MessageItemType = {
 };
 
 export type PanelStateType = {
+  // 消息列表
   messages?: MessageItemType[];
+  // 是否深度思考
+  isDeepThink?: boolean;
+  // 是否联网搜索
+  isOnlineSearch?: boolean;
 };
 
 const initState: PanelStateType = {
   messages: [],
+  isDeepThink: false,
+  isOnlineSearch: false,
 };
 
 const panelReducer = (state = initState, action: ActionType) => {
@@ -36,6 +43,14 @@ const panelReducer = (state = initState, action: ActionType) => {
       tempMessages[length - 1].content = content;
       tempMessages[length - 1].isFinish = isFinish;
       return { ...state, messages: tempMessages };
+
+    // 是否深度思考
+    case Types.CHANGE_DEEPTHINK:
+      return { ...state, isDeepThink: !state.isDeepThink };
+
+    // 是否联网搜索
+    case Types.CHANGE_ONLINESEARCH:
+      return { ...state, isOnlineSearch: !state.isOnlineSearch };
 
     default:
       return state;

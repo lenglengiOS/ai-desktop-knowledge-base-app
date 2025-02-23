@@ -3,6 +3,7 @@ import { SettingStateType } from "../store/reducers/settingReducer";
 import store from "../store";
 import { useSelector } from "react-redux";
 import { ReducersType } from "../store/reducers";
+import makeMessages from "./mssages";
 /**
  * deepseek
  */
@@ -43,9 +44,7 @@ export async function chat({
     stream = await client.chat.completions.create({
       model,
       // model: "deepseek-chat",
-      // if chat context is needed, modify the array
-      messages: [{ role: "user", content }],
-      // stream mode
+      messages: makeMessages(content),
       stream: true,
     });
 
@@ -68,7 +67,8 @@ export async function chat({
     onError("网络繁忙，请稍后再试");
     if (process.env.NODE_ENV === "development") {
       // 在开发版本中执行的逻辑
-      throw err;
+      // throw err;
+      console.error(err);
     }
   }
 }

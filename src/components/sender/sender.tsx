@@ -15,6 +15,14 @@ import {
   OpenAIOutlined,
 } from "@ant-design/icons";
 import { createStyles } from "antd-style";
+import { ButtonType } from "antd/es/button";
+import { useDispatch, useSelector } from "react-redux";
+import { PanelStateType } from "../../store/reducers/panelReducer";
+import { ReducersType } from "../../store/reducers";
+import {
+  changeDeepThinkAction,
+  changeOnlineSearchAction,
+} from "../../store/actions/panelAction";
 
 interface Iprops {
   onSubmit?: (content: string) => void;
@@ -22,20 +30,22 @@ interface Iprops {
   loading: boolean;
 }
 
-type ButtonType = "dashed" | "link" | "default" | "text" | "primary";
-
 const LHLSender: FC<Iprops> = ({ onSubmit, onCancel, loading }) => {
   const [value, setValue] = useState<string>("");
-  const [thinkType, setThinkType] = useState<ButtonType>("dashed");
-  const [netType, setNetType] = useState<ButtonType>("dashed");
+  // const [thinkType, setThinkType] = useState<ButtonType>("dashed");
+  // const [netType, setNetType] = useState<ButtonType>("dashed");
+  const dispatch = useDispatch();
+  const { isDeepThink, isOnlineSearch }: PanelStateType =
+    useSelector<ReducersType>((state) => state.panel);
+
   const { styles } = useStyle();
 
-  const onThinkClick = () => {
-    setThinkType((pre) => (pre === "dashed" ? "primary" : "dashed"));
+  const onDeepThinkClick = () => {
+    dispatch(changeDeepThinkAction());
   };
 
-  const onNetClick = () => {
-    setNetType((pre) => (pre === "dashed" ? "primary" : "dashed"));
+  const onOnlineSearchClick = () => {
+    dispatch(changeOnlineSearchAction());
   };
 
   return (
@@ -47,7 +57,6 @@ const LHLSender: FC<Iprops> = ({ onSubmit, onCancel, loading }) => {
         onChange={(v) => {
           setValue(v);
         }}
-        onKeyPress={() => {}}
         onSubmit={async (content: string) => {
           setValue("");
           onSubmit && onSubmit(content.trim());
@@ -63,19 +72,19 @@ const LHLSender: FC<Iprops> = ({ onSubmit, onCancel, loading }) => {
       >
         <Space>
           <Button
-            onClick={onThinkClick}
+            onClick={onDeepThinkClick}
             style={{ borderRadius: 16 }}
             size="middle"
-            type={thinkType}
+            type={isDeepThink ? "primary" : "dashed"}
             icon={<OpenAIOutlined />}
           >
             深度思考
           </Button>
           <Button
-            onClick={onNetClick}
+            onClick={onOnlineSearchClick}
             style={{ borderRadius: 16 }}
             icon={<ChromeOutlined />}
-            type={netType}
+            type={isOnlineSearch ? "primary" : "dashed"}
             size="middle"
           >
             联网搜索

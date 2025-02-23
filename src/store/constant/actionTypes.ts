@@ -5,6 +5,8 @@ export const HIDE_LOADING = "app/HIDE_LOADING";
 // panel
 export const ADD_MESSAGE = "panel/ADD_MESSAGE";
 export const UPDATE_MESSAGE = "panel/UPDATE_MESSAGE";
+export const CHANGE_DEEPTHINK = "panel/CHANGE_DEEPTHINK";
+export const CHANGE_ONLINESEARCH = "panel/CHANGE_ONLINESEARCH";
 
 // knowledge
 export const ADD_KNOWLEDGE = "knowledge/ADD_KNOWLEDGE";
