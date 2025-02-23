@@ -1,3 +1,6 @@
+/**
+ * 对话记录
+ */
 import { ReducersType } from "../store/reducers";
 import store from "../store";
 // 我们将 System Messages 单独放置在一个列表中，这是因为每次请求都应该携带 System Messages
@@ -43,10 +46,8 @@ function makeMessages(input: string, n = 20) {
 
   // 处理深度思考逻辑
   const {
-    panel: { isDeepThink, isOnlineSearch },
+    panel: { isDeepThink },
   }: ReducersType = store.getState();
-  console.log("是否深度思考： ", isDeepThink);
-  console.log("是否联网搜索： ", isOnlineSearch);
 
   if (!isDeepThink) {
     return [

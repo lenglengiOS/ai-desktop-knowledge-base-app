@@ -7,7 +7,7 @@ import * as PanelActions from "../../store/actions/panelAction";
 import { useDispatch, useSelector } from "react-redux";
 import { ReducersType } from "../../store/reducers";
 import { PanelStateType } from "../../store/reducers/panelReducer";
-import { message } from "antd/es";
+import { message, Space, Spin } from "antd/es";
 import { throttle, delay } from "../../utils/common";
 import MessageItem from "./messageItem";
 import styles from "./panel.module.css";
@@ -23,9 +23,8 @@ const LHLPanel: FC<Iprops> = () => {
   const isProgrammaticScroll = useRef(false);
 
   const dispatch = useDispatch();
-  const { messages }: PanelStateType = useSelector<ReducersType>(
-    (state) => state.panel
-  );
+  const { messages, isOnlineSearch }: PanelStateType =
+    useSelector<ReducersType>((state) => state.panel);
 
   useEffect(() => {
     scrollToBottom();
@@ -185,6 +184,12 @@ const LHLPanel: FC<Iprops> = () => {
               content={content}
               placement={placement}
               loading={placement === "start" && content === ""}
+              loadingRender={() => (
+                <Space style={{ margin: 12 }}>
+                  <Spin size="small" />
+                  {isOnlineSearch ? "联网搜索中..." : ""}
+                </Space>
+              )}
               messageRender={(content) => (
                 <MessageItem
                   content={content}
@@ -194,7 +199,7 @@ const LHLPanel: FC<Iprops> = () => {
               )}
               typing={
                 placement === "start" && i === messages.length - 1 && !isFinish
-                  ? { step: 2, interval: 50 }
+                  ? { step: 5, interval: 20 }
                   : // ? { step: Math.floor(content.length / 8), interval: 40 }
                     false
               }
